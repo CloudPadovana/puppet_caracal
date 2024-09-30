@@ -1,0 +1,97 @@
+class controller_caracal::rsyslog inherits controller_caracal::params {
+
+#
+# Questa classe configura rsyslog in modo da centralizzare i log su cld-foreman
+#
+include rsyslog::config
+
+#rsyslog::target_file:55_openstack.conf
+  file {'ignore_nagios':
+      source      => 'puppet:///modules/controller_caracal/ignore-systemd-session-slice-nagios.conf',
+      path        => '/etc/rsyslog.d/ignore-systemd-session-slice-nagios.conf',
+      backup      => true,
+      owner   => root,
+      group   => root,
+      mode    => "0644",
+      notify => Service['rsyslog'],
+  }
+}
+
+class { 'rsyslog::config':
+  'expression_filters' => {
+    'complex_filer' => {
+       'conditionals' => {
+          'conntrack' => {
+             'expression' => 'prifilt("local5.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/conntrack/conntrack.log'}
+         
+                }
+              ]
+           }
+           'nova' => {
+             'expression' => 'prifilt("local0.*")'
+             'tasks' => [
+               'action' => { 
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/nova'}
+         
+                }
+              ]
+           }
+           'glance' => {
+             'expression' => 'prifilt("local1.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/glance'}
+
+                }
+              ]
+           }
+           'cinder' => {
+             'expression' => 'prifilt("local2.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/cinder'}
+
+                }
+              ]
+           }
+           'keystone' => {
+             'expression' => 'prifilt("local3.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/keystone'}
+
+                }
+              ]
+           }
+           'neutron' => {
+             'expression' => 'prifilt("local6.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/neutron'}
+
+                }
+              ]
+           }
+           'haproxy' => {
+             'expression' => 'prifilt("local4.*")'
+             'tasks' => [
+               'action' => {
+                 'type' => 'omfile',
+                 'config' => {'file' => '/var/log/haproxy'}
+
+                }
+              ]
+           }
+        }
+     }
+   }
+}

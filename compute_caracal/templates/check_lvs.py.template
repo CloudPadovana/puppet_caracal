@@ -1,0 +1,183 @@
+#!/usr/bin/python
+import sys
+import getopt
+import os
+import smtplib
+import subprocess
+import socket
+import re
+import random
+import time
+
+SOCKET = None
+def check_already_running(uniq_name):
+    try:
+        global SOCKET
+        SOCKET = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        SOCKET.bind('\0' + uniq_name)
+        return True
+    except socket.error as e:
+        return False
+
+def send_mail(subject,sender,receiver,text_object):
+    # Send mail massage
+
+    message = """Subject: """ + subject + """
+To: """ + receiver + """
+From: """ + sender + """
+
+""" + text_object + """ """
+
+    try:
+        smtpObj = smtplib.SMTP('localhost')
+        smtpObj.sendmail(sender, receiver, message)
+        print("Successfully sent email")
+    except smtplib.SMTPException:
+        print("Error: unable to send email")
+
+class lvs_check:
+    def __init__(self):
+        self.sensor_name = "LVS"
+        self.warn = 50.0
+        self.crit = 60.0
+        self.empty_set_ok = 0
+        self.thinpools = []
+        self.errors = []
+        self.error_message = ""
+        self.sensor_status = 0
+        self.output_status = ""
+        self.nagios_server = "<%= @nagios_server %>"
+        self.nagios_conf = "/etc/nagios/send_nsca.cfg"
+        self.mail_from = "<%= @nagios_email %>"
+        self.mail_to = "<%= @nagios_email %>"
+        
+    def append_error(self,exit_code,message):
+        self.errors.append({'exit_code':exit_code,'message':message})
+
+    def read_thinpools(self):
+        try:
+            lvsoutput = subprocess.run("/usr/sbin/lvs --noheadings --separator : --select 'lv_attr =~ ^t' -o lv_attr,lv_name,vg_name,data_percent,metadata_percent,lv_when_full", shell=True, check=True, stdout=subprocess.PIPE, universal_newlines=True)
+
+            if lvsoutput.returncode == 0:
+                for lvsline in lvsoutput.stdout.splitlines(): 
+                    #print(lvsline)
+                    lv=lvsline.split(':')
+                    #print(lv)
+                    self.thinpools.append({'lv_attr':lv[0],'lv_name':lv[1],'vg_name':lv[2],'data_percent':lv[3],'metadata_percent':lv[4]})
+
+                #print(self.thinpools)
+
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            send_mail("getthinpool",self.mail_from,self.mail_to,e.stdout)
+
+    def parse_thinpools(self):
+        #print("crit: " + str(self.crit))
+        #print("warn: " + str(self.warn))
+        for thinpool in self.thinpools:
+            # Check metadata usage
+            if (float(thinpool['metadata_percent']) > self.crit):
+                self.append_error(2, "CRITICAL: Meta% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['metadata_percent'] + "%")
+            elif (float(thinpool['metadata_percent']) > self.warn):
+                self.append_error(1, "WARNING: Meta% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['metadata_percent'] + "%")
+            else:
+                if len(self.output_status) > 0:
+                    self.output_status += " - Meta% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['metadata_percent'] + "%";
+                else:
+                    self.output_status = "Meta% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['metadata_percent'] + "%";
+            
+            # Check data usage
+            if (float(thinpool['data_percent']) > self.crit):
+                self.append_error(2, "CRITICAL: Data% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['data_percent'] + "%")
+            elif (float(thinpool['data_percent']) > self.warn):
+                self.append_error(1, "WARNING: Data% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['data_percent'] + "%")
+            else:
+                if len(self.output_status) > 0:
+                    self.output_status += " - Data% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['data_percent'] + "%";
+                else:
+                    self.output_status = "Data% of " + thinpool['vg_name'] + "/" + thinpool['lv_name'] + " is " + thinpool['data_percent'] + "%";
+
+    def generate_error_message(self):
+        self.errors = sorted(self.errors, key=lambda k: k['exit_code'])
+
+        for error in self.errors:
+            if len(self.error_message) > 0:
+                self.error_message += " - " + error['message']
+            else:
+                self.error_message = error['message']
+            if error['exit_code'] > self.sensor_status:
+                self.sensor_status = error['exit_code']
+
+    def run(self):
+        # GET OPTIONS
+
+        self.read_thinpools()
+
+        # No thinpool found?
+        if len(self.thinpools) == 0:
+            if (self.empty_set_ok == 1):
+                self.output_status = "OK - No thinpools found"
+            else:
+                self.output_status = "UNKNOWN - No thinpools found"
+                self.sensor_status = 1
+        else:
+            self.parse_thinpools()
+            if (len(self.errors) > 0):
+                self.generate_error_message()
+                self.output_status = self.error_message
+            else:
+                self.output_status = "OK - " + self.output_status
+
+        count = 0
+        while count < 4:
+            count += 1
+            rand_time = random.randint(1,30)
+            time.sleep(rand_time)
+            try:
+                hostname = socket.gethostname().split('.')[0]
+                # 0 - OK
+                # 1 - Warning
+                # 2 - Error
+                #print('echo -e "' + hostname + '\t'+ self.sensor_name + '\t' + str(self.sensor_status) + '\t' + self.output_status + '\n"')
+                result_check = subprocess.run('echo -e "' + hostname + '\t'+ self.sensor_name + '\t' + str(self.sensor_status) + '\t' + self.output_status + '\n" | /usr/sbin/send_nsca -H ' + self.nagios_server + ' -c ' + self.nagios_conf, shell=True, check=True, stdout=subprocess.PIPE, universal_newlines=True)
+                #if result_check.returncode != 0:
+                #    send_mail("Result check",self.mail_from,self.mail_to,result_check.stdout)
+                break
+    
+            except subprocess.CalledProcessError as e:
+                print(str(e))
+                #send_mail("run",self.mail_from,self.mail_to,str(e))
+
+
+def main(argv):
+    obj = lvs_check()
+
+    try:
+        opts, args = getopt.getopt(argv,"hw:c:",["warning=","critical=","empty-set-ok"])
+    except getopt.GetoptError:
+        print ('check_lvs.py -empty-set-ok -w <value> -c <value>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print ('check_lvs.py -empty-set-ok -w <value> -c <value>')
+            sys.exit()
+        elif opt in ("--empty-set-ok"):
+            obj.empty_set_ok = 1
+            #print(obj.empty_set_ok)
+        elif opt in ("-w", "--warning"):
+            obj.warn = float(arg)
+            #print ('Warning = ', obj.warn)
+        elif opt in ("-c", "--critical"):
+            obj.crit = float(arg)
+            #print ('Critical = ', obj.crit)
+
+    obj.run()
+
+if __name__ == "__main__":
+    if not check_already_running("lvs_check"):
+        print("Program already running. Exit.")
+        sys.exit(2)
+    #main()
+    main(sys.argv[1:])
+
+

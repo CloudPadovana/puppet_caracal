@@ -1,0 +1,6 @@
+<%=@chk_exp_schedule-%>  root python3 /usr/share/openstack-dashboard/manage.py checkexpiration  --config /etc/openstack-auth-shib/actions.conf --logconf /etc/openstack-auth-shib/logging.conf 2>/dev/null
+<%=@noti_exp_schedule-%> root python3 /usr/share/openstack-dashboard/manage.py notifyexpiration  --config /etc/openstack-auth-shib/actions.conf --logconf /etc/openstack-auth-shib/logging.conf 2>/dev/null
+0 9 * * 1  root python3 /usr/share/openstack-dashboard/manage.py pendingsubscr    --config /etc/openstack-auth-shib/actions.conf --logconf /etc/openstack-auth-shib/logging.conf 2>/dev/null
+<%=@renew_schedule-%> root python3 /usr/share/openstack-dashboard/manage.py renewalrequest   --config /etc/openstack-auth-shib/actions.conf --logconf /etc/openstack-auth-shib/logging.conf 2>/dev/null
+<%=@chk_gate_schedule-%> root python3 /usr/share/openstack-dashboard/manage.py checkgateaccess   --config /etc/openstack-auth-shib/actions.conf --logconf /etc/openstack-auth-shib/logging.conf 2>/dev/null
+

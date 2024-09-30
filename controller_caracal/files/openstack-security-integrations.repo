@@ -1,0 +1,16 @@
+[openstack-security-integrations]
+name=openstack-security-integrations for Caracal
+baseurl=https://artifacts.pd.infn.it/packages/CAP/openstack-security-integrations/AlmaLinux9-Caracal/noarch
+protect=1
+enabled=1
+priority=10
+gpgcheck=0
+
+[cloudveneto-extras-x86_64]
+name=Extra packages for CloudVeneto and Caracal (x86_64)
+baseurl=https://artifacts.pd.infn.it/packages/CAP/openstack-security-integrations/AlmaLinux9-extras/x86_64
+protect=1
+enabled=1
+priority=10
+gpgcheck=0
+

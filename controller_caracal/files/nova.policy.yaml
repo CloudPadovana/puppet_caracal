@@ -1,0 +1,60 @@
+# Pause a server
+# POST  /servers/{server_id}/action (pause)
+# Intended scope(s): system, project
+"os_compute_api:os-pause-server:pause": "rule:admin_api or user_id:%(user_id)s"
+
+# Delete a server
+# DELETE  /servers/{server_id}
+# Intended scope(s): system, project
+"os_compute_api:servers:delete": "rule:admin_api or user_id:%(user_id)s"
+
+# Resize a server
+# POST  /servers/{server_id}/action (resize)
+# Intended scope(s): system, project
+"os_compute_api:servers:resize": "rule:admin_api or user_id:%(user_id)s"
+
+# Rebuild a server
+# POST  /servers/{server_id}/action (rebuild)
+# Intended scope(s): system, project
+"os_compute_api:servers:rebuild": "rule:admin_api or user_id:%(user_id)s"
+
+# Stop a server
+# POST  /servers/{server_id}/action (os-stop)
+# Intended scope(s): system, project
+"os_compute_api:servers:stop": "rule:admin_api or user_id:%(user_id)s"
+
+# Suspend server
+# POST  /servers/{server_id}/action (suspend)
+# Intended scope(s): system, project
+"os_compute_api:os-suspend-server:suspend": "rule:admin_api or user_id:%(user_id)s"
+
+# Lock a server
+# POST  /servers/{server_id}/action (lock)
+"os_compute_api:os-lock-server:lock": "rule:admin_api or user_id:%(user_id)s"
+
+# Rescue/unrescue a server
+# POST  /servers/{server_id}/action (rescue)
+# POST  /servers/{server_id}/action (unrescue)
+"os_compute_api:os-rescue": "rule:admin_api or user_id:%(user_id)s"
+
+# Change the administrative password for a server
+# POST  /servers/{server_id}/action (changePassword)
+"os_compute_api:os-admin-password": "rule:admin_api or user_id:%(user_id)s"
+
+# Evacuate a server from a failed host to a new host
+# POST  /servers/{server_id}/action (evacuate)
+"os_compute_api:os-evacuate": "rule:admin_api or user_id:%(user_id)s"
+
+# Restore a soft deleted server or force delete a server before
+# deferred cleanup
+# POST  /servers/{server_id}/action (restore)
+# POST  /servers/{server_id}/action (forceDelete)
+"os_compute_api:os-deferred-delete": "rule:admin_api or user_id:%(user_id)s"
+
+# Shelve server
+# POST  /servers/{server_id}/action (shelve)
+"os_compute_api:os-shelve:shelve": "rule:admin_api or user_id:%(user_id)s"
+
+# Trigger crash dump in a server
+# POST  /servers/{server_id}/action (trigger_crash_dump)
+"os_compute_api:servers:trigger_crash_dump": "rule:admin_api or user_id:%(user_id)s"
