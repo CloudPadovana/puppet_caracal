@@ -377,7 +377,6 @@ class controller_caracal::params ($cloud_role){
   ############################################################################
 
   $enable_shib = true
-  $shib_repo_url = "http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo"
   $shib_info_url = "https://cloud-areapd.pd.infn.it/Users_Guide/html-desktop/"
   
   if $::controller_caracal::cloud_role == "is_production" {

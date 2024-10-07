@@ -42,30 +42,17 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
   #  OS-Federation
   ############################################################################
   if $enable_aai_ext {
- 
-    if $facts['os']['name'] == 'CentOS' {
-      exec { "download_cap_repo":
-        command => "/usr/bin/wget -q -O /etc/yum.repos.d/openstack-security-integrations.repo ${cap_repo_url}",
-        unless  => "/bin/grep Caracal /etc/yum.repos.d/openstack-security-integrations.repo 2>/dev/null >/dev/null",
-      }
+    file { "/etc/yum.repos.d/openstack-security-integrations.repo":
+      ensure   => file,
+      owner    => "root",
+      group    => "root",
+      mode     => "0640",
+      content  => file("controller_caracal/openstack-security-integrations.repo"),
+    }
 
-      package { ["openstack-auth-cap", "openstack-auth-shib"]:
-        ensure  => latest,
-        require => Exec["download_cap_repo"],
-      }
-    } else {
-      file { "/etc/yum.repos.d/openstack-security-integrations.repo":
-        ensure   => file,
-        owner    => "root",
-        group    => "root",
-        mode     => "0640",
-        content  => file("controller_caracal/openstack-security-integrations.repo"),
-      }
-
-      package { "openstack-cloudveneto":
-        ensure  => latest,
-        require => File["/etc/yum.repos.d/openstack-security-integrations.repo"],
-      }
+    package { "openstack-cloudveneto":
+      ensure  => latest,
+      require => File["/etc/yum.repos.d/openstack-security-integrations.repo"],
     }
   
     file { "/usr/share/openstack-dashboard/openstack_dashboard/local/local_settings.d/_1002_aai_settings.py":
@@ -113,11 +100,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
       tag      => ["aai_conf"],
     }
 
-    if $facts['os']['name'] == 'CentOS' {
-      Package["openstack-auth-cap"] -> File <| tag == 'aai_conf' |>
-    } else {
-      Package["openstack-cloudveneto"] -> File <| tag == 'aai_conf' |>
-    }
+    Package["openstack-cloudveneto"] -> File <| tag == 'aai_conf' |>
 
 
   ### DB Creation if not exist and grant privileges.
