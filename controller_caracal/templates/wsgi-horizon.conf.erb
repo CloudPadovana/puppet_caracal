@@ -21,8 +21,8 @@ Listen 443
     SSLEngine on
     SSLProtocol all -SSLv2
     SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA
-    SSLCertificateFile <%=@host_cert%>
-    SSLCertificateKeyFile <%=@host_key%>
+    SSLCertificateFile <%=@horizon_infn_cert%>
+    SSLCertificateKeyFile <%=@horizon_infn_key%>
 
     WSGIApplicationGroup %{GLOBAL}
     WSGIDaemonProcess apache group=apache processes=3 threads=10 user=apache

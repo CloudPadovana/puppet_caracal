@@ -18,7 +18,7 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
     owner    => "shibd",
     group    => "shibd",
     mode     => "0400",
-    source   => "${host_key}",
+    source   => "${horizon_infn_key}",
     tag      => ["shibboleth_sec"],
   }
 
@@ -27,7 +27,7 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
     owner    => "shibd",
     group    => "shibd",
     mode     => "0600",
-    source   => "${host_cert}",
+    source   => "${horizon_infn_cert}",
     tag      => ["shibboleth_sec"],
   }
 
@@ -36,7 +36,7 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
     owner    => "shibd",
     group    => "shibd",
     mode     => "0400",
-    source   => "${unipd_key}",
+    source   => "${horizon_unipd_key}",
     tag      => ["shibboleth_sec"],
   }
 
@@ -45,7 +45,7 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
     owner    => "shibd",
     group    => "shibd",
     mode     => "0600",
-    source   => "${unipd_cert}",
+    source   => "${horizon_unipd_cert}",
     tag      => ["shibboleth_sec"],
   }
 

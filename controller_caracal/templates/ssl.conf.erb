@@ -165,8 +165,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ServerSignature  Off
 
     SSLEngine             on
-    SSLCertificateFile    <%=@host_cert%>
-    SSLCertificateKeyFile <%=@host_key%>
+    SSLCertificateFile    <%=@horizon_infn_cert%>
+    SSLCertificateKeyFile <%=@horizon_infn_key%>
     SSLCACertificateFile  <%=@cafile%>
 
     DocumentRoot "/var/www/"
@@ -368,8 +368,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ServerSignature  Off
 
     SSLEngine             on
-    SSLCertificateFile    <%=@unipd_cert%>
-    SSLCertificateKeyFile <%=@unipd_key%>
+    SSLCertificateFile    <%=@horizon_unipd_cert%>
+    SSLCertificateKeyFile <%=@horizon_unipd_key%>
     SSLCACertificateFile  <%=@cafile%>
 
     DocumentRoot "/var/www/"

@@ -347,10 +347,10 @@ class controller_caracal::params ($cloud_role){
   #  Security params
   ############################################################################
 
-  $host_cert = "/etc/grid-security/infn-cert.pem"
-  $host_key = "/etc/grid-security/infn-key.pem"
-  $unipd_cert = "/etc/grid-security/unipd-cert.pem"
-  $unipd_key = "/etc/grid-security/unipd-key.pem"
+  $horizon_infn_cert = "/etc/grid-security/horizon-infn-cert.pem"
+  $horizon_infn_key = "/etc/grid-security/horizon-infn-key.pem"
+  $horizon_unipd_cert = "/etc/grid-security/horizon-unipd-cert.pem"
+  $horizon_unipd_key = "/etc/grid-security/horizon-unipd-key.pem"
   $keystone_infn_cert = "/etc/grid-security/keystone-infn-cert.pem"
   $keystone_infn_key = "/etc/grid-security/keystone-infn-key.pem"
   $keystone_unipd_cert = "/etc/grid-security/keystone-unipd-cert.pem"

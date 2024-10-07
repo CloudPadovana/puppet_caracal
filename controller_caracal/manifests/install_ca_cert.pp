@@ -20,73 +20,53 @@ class controller_caracal::install_ca_cert inherits controller_caracal::params {
     path    => '/etc/grid-security/certificates/INFN-CA.pem',
   }
 
-  # TODO check if keys are necessary
-  file { 'cert_pem':
-    path    => '/etc/grid-security/cert.pem',
-    source  => '/etc/grid-security/hostcert.pem',
-    ensure  => 'present',
-    owner   => 'apache',
-    group   => 'apache',
+  # Deployment of the CA GEANT_OV_RSA_CA4
+  file { '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem':
+    source => 'puppet:///modules/controller_caracal/GEANT_OV_RSA_CA4.pem',
+    tag    => [ "ca_GEANT_OV_RSA_CA4" ],
   }
 
-  file { 'key_pem':
-    path    => '/etc/grid-security/key.pem',
-    source  => '/etc/grid-security/hostkey.pem',
-    ensure  => 'present',
-    owner   => 'apache',
-    group   => 'apache'
+  file { '/etc/grid-security/certificates/GEANT-OV-RSA-CA-4.crl_url':
+    content => "http://crl.usertrust.com/USERTrustRSACertificationAuthority.crl",
+    tag     => [ "ca_GEANT_OV_RSA_CA4" ],
   }
 
-  if $facts['os']['name'] == 'AlmaLinux' {
-
-    # Deployment of the CA GEANT_OV_RSA_CA4
-    file { '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem':
-      source => 'puppet:///modules/controller_caracal/GEANT_OV_RSA_CA4.pem',
-      tag    => [ "ca_GEANT_OV_RSA_CA4" ],
-    }
-
-    file { '/etc/grid-security/certificates/GEANT-OV-RSA-CA-4.crl_url':
-      content => "http://crl.usertrust.com/USERTrustRSACertificationAuthority.crl",
-      tag     => [ "ca_GEANT_OV_RSA_CA4" ],
-    }
-
-    file { '/etc/grid-security/certificates/08ab1bf8.0':
-      target => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
-      tag     => [ "ca_GEANT_OV_RSA_CA4" ],
-    }
-
-    file { '/etc/grid-security/certificates/260b2ae6.0':
-      target => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
-      tag     => [ "ca_GEANT_OV_RSA_CA4" ],
-    }
-
-    # Registering the external CAs in the system truststore
-    file { '/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem':
-      ensure  => link,
-      target  => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
-      tag     => [ "ca_conf" ],
-    }
-    File <| tag == 'ca_GEANT_OV_RSA_CA4' |> -> File[ "/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem" ]
-
-    file { '/etc/pki/ca-trust/source/anchors/GEANTeScienceSSLCA4.pem':
-      ensure  => link,
-      target  => '/etc/grid-security/certificates/GEANTeScienceSSLCA4.pem',
-      require => Package[ $capackages ],
-      tag     => [ "ca_conf" ],
-    }
-
-    file { '/etc/pki/ca-trust/source/anchors/USERTrustRSACertificationAuthority.pem':
-      ensure  => link,
-      target  => '/etc/grid-security/certificates/USERTrustRSACertificationAuthority.pem',
-      require => Package[ $capackages ],
-      tag     => [ "ca_conf" ],
-    }
-
-    exec { 'update-ca-trust':
-      command     => "/usr/bin/update-ca-trust extract",
-      refreshonly => true,
-    }
-
-    File <| tag == 'ca_conf' |> ~> Exec[ "update-ca-trust" ]
+  file { '/etc/grid-security/certificates/08ab1bf8.0':
+    target => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
+    tag     => [ "ca_GEANT_OV_RSA_CA4" ],
   }
+
+  file { '/etc/grid-security/certificates/260b2ae6.0':
+    target => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
+    tag     => [ "ca_GEANT_OV_RSA_CA4" ],
+  }
+
+  # Registering the external CAs in the system truststore
+  file { '/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem':
+    ensure  => link,
+    target  => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
+    tag     => [ "ca_conf" ],
+  }
+  File <| tag == 'ca_GEANT_OV_RSA_CA4' |> -> File[ "/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem" ]
+
+  file { '/etc/pki/ca-trust/source/anchors/GEANTeScienceSSLCA4.pem':
+    ensure  => link,
+    target  => '/etc/grid-security/certificates/GEANTeScienceSSLCA4.pem',
+    require => Package[ $capackages ],
+    tag     => [ "ca_conf" ],
+  }
+
+  file { '/etc/pki/ca-trust/source/anchors/USERTrustRSACertificationAuthority.pem':
+    ensure  => link,
+    target  => '/etc/grid-security/certificates/USERTrustRSACertificationAuthority.pem',
+    require => Package[ $capackages ],
+    tag     => [ "ca_conf" ],
+  }
+
+  exec { 'update-ca-trust':
+    command     => "/usr/bin/update-ca-trust extract",
+    refreshonly => true,
+  }
+
+  File <| tag == 'ca_conf' |> ~> Exec[ "update-ca-trust" ]
 }
