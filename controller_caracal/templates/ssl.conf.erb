@@ -34,8 +34,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ErrorLogFormat  "%{cu}t %M"
 
     SSLEngine             on
-    SSLCertificateFile    <%=@keystone_infn_cert%>
-    SSLCertificateKeyFile <%=@keystone_infn_key%>
+    SSLCertificateFile    /etc/pki/tls/certs/keystone-infn-cert.pem
+    SSLCertificateKeyFile /etc/pki/tls/private/keystone-infn-key.pem
     SSLCACertificateFile  <%=@cafile%>
 
     WSGIScriptAlias       / /usr/bin/keystone-wsgi-public
@@ -165,8 +165,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ServerSignature  Off
 
     SSLEngine             on
-    SSLCertificateFile    <%=@horizon_infn_cert%>
-    SSLCertificateKeyFile <%=@horizon_infn_key%>
+    SSLCertificateFile    /etc/pki/tls/certs/horizon-infn-cert.pem
+    SSLCertificateKeyFile /etc/pki/tls/private/horizon-infn-key.pem
     SSLCACertificateFile  <%=@cafile%>
 
     DocumentRoot "/var/www/"
@@ -262,8 +262,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ErrorLogFormat  "%{cu}t %M"
 
     SSLEngine             on
-    SSLCertificateFile    <%=@keystone_unipd_cert%>
-    SSLCertificateKeyFile <%=@keystone_unipd_key%>
+    SSLCertificateFile    /etc/pki/tls/certs/keystone-unipd-cert.pem
+    SSLCertificateKeyFile /etc/pki/tls/private/keystone-unipd-key.pem
     SSLCACertificateFile  <%=@cafile%>
 
     WSGIScriptAlias       / /usr/bin/keystone-wsgi-public
@@ -368,8 +368,8 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
     ServerSignature  Off
 
     SSLEngine             on
-    SSLCertificateFile    <%=@horizon_unipd_cert%>
-    SSLCertificateKeyFile <%=@horizon_unipd_key%>
+    SSLCertificateFile    /etc/pki/tls/certs/horizon-unipd-cert.pem
+    SSLCertificateKeyFile /etc/pki/tls/private/horizon-unipd-key.pem
     SSLCACertificateFile  <%=@cafile%>
 
     DocumentRoot "/var/www/"

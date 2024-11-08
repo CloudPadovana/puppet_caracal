@@ -1,5 +1,73 @@
 class controller_caracal::configure_horizon inherits controller_caracal::params {
 
+  ############################################################################
+  #  Portal keys
+  ############################################################################
+
+  file { "/etc/pki/tls/private/horizon-infn-key.pem":
+    ensure   => file,
+    mode     => "0400",
+    source   => "${horizon_infn_key}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/certs/horizon-infn-cert.pem":
+    ensure   => file,
+    mode     => "0600",
+    source   => "${horizon_infn_cert}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/private/horizon-unipd-key.pem":
+    ensure   => file,
+    mode     => "0400",
+    source   => "${horizon_unipd_key}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/certs/horizon-unipd-cert.pem":
+    ensure   => file,
+    mode     => "0600",
+    source   => "${horizon_unipd_cert}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/private/keystone-infn-key.pem":
+    ensure   => file,
+    mode     => "0400",
+    source   => "${keystone_infn_key}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/certs/keystone-infn-cert.pem":
+    ensure   => file,
+    mode     => "0600",
+    source   => "${keystone_infn_cert}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/private/keystone-unipd-key.pem":
+    ensure   => file,
+    mode     => "0400",
+    source   => "${keystone_unipd_key}",
+    tag      => ["portal_keys"],
+  }
+
+  file { "/etc/pki/tls/certs/keystone-unipd-cert.pem":
+    ensure   => file,
+    mode     => "0600",
+    source   => "${keystone_unipd_cert}",
+    tag      => ["portal_keys"],
+  }
+
+  # TODO verify subscription
+  #File <| tag == 'portal_keys' |> ~> Service["controller_caracal::service::httpd"]
+
+
+  ############################################################################
+  #  Dashboard
+  ############################################################################
+
   file { "/etc/httpd/conf.d/ssl.conf":
     ensure   => file,
     owner    => "root",
