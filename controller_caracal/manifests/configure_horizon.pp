@@ -32,12 +32,6 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     mode     => "0644",
   }
 
-#  exec { "port_80_closed":
-#    command => "/usr/bin/sed -i -e 's|^Listen\\s*80\\s*|#Listen 80|g' /etc/httpd/conf/httpd.conf" ,
-#    unless  => "/bin/grep '#Listen\\s*80\\s*$' /etc/httpd/conf/httpd.conf",
-#  }
-
-
   ############################################################################
   #  OS-Federation
   ############################################################################
@@ -48,6 +42,10 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
       group    => "root",
       mode     => "0640",
       content  => file("controller_caracal/openstack-security-integrations.repo"),
+    }
+
+    package { "mariadb":
+      ensure  => installed,
     }
 
     package { "openstack-cloudveneto":
@@ -103,20 +101,6 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     Package["openstack-cloudveneto"] -> File <| tag == 'aai_conf' |>
 
 
-  ### DB Creation if not exist and grant privileges.
-
-    package { "mariadb":
-      ensure  => installed,
-    }
-
-    exec { "create-$aai_db_name-db":
-        command => "/usr/bin/mysql -u root -p${mysql_admin_password} -h ${aai_db_host} -e \"create database IF NOT EXISTS ${aai_db_name}; grant all on ${aai_db_name}.* to ${aai_db_user}@localhost identified by '${aai_db_pwd}'; grant all on ${aai_db_name}.* to ${aai_db_user}@'${vip_mgmt}' identified by '${aai_db_pwd}'; grant all on ${aai_db_name}.* to ${aai_db_user}@'${ip_ctrl1}' identified by '${aai_db_pwd}'; grant all on ${aai_db_name}.* to ${aai_db_user}@'${ip_ctrl2}' identified by '${aai_db_pwd}';\"",
-        unless  => "/usr/bin/mysql -u root -p${mysql_admin_password} -h ${aai_db_host} -e \"show DATABASES LIKE '${aai_db_name}';\"",
-        require => Package["mariadb"],
-    }
-
-  }
-
   ############################################################################
   #  Cron-scripts configuration
   ############################################################################
@@ -147,6 +131,15 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     group    => "root",
     mode     => '0644',
     content  => template("controller_caracal/openstack-auth-shib-cron.erb"),
+  }
+
+  ############################################################################
+  #  gate configuration
+  ############################################################################
+
+  exec { "gate key check":
+    command => "test -e ${gate_credentials}",
+    returns => 0,
   }
 
   ############################################################################
