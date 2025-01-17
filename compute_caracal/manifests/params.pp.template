@@ -149,7 +149,7 @@ w
   $pci_geforcegtx_SND = '{"name":"GK110_SND","product_id":"0e1a","vendor_id":"10de","device_type":"type-PCI"}'
   $pci_t4 = '{"name":"T4","product_id":"1eb8","vendor_id":"10de","device_type":"type-PF"}'
   $pci_v100 = '{"name":"V100","product_id":"1df6","vendor_id":"10de","device_type":"type-PCI"}'
-  $pci_passthrough_whitelist   = '{\"vendor_id\":\"10de\"}'
+  $pci_device_spec = '{\"vendor_id\":\"10de\"}'
   $project_domain_name = 'default'
   $rabbit_ha_queues = false
   $region_name             = 'regionOne'

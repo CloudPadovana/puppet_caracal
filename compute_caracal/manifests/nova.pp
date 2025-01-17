@@ -215,7 +215,7 @@ compute_caracal::nova::do_config { 'nova_enable_proxy_headers_parsing': conf_fil
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-dfa-gpu-01
  if ($::mgmtnw_ip == "192.168.60.107") {
-  compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+  compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -237,7 +237,7 @@ compute_caracal::nova::do_config { 'nova_enable_proxy_headers_parsing': conf_fil
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-dfa-gpu-02 AND cld-np-gpu-02
  if ($::mgmtnw_ip == "192.168.60.108") or ($::mgmtnw_ip == "192.168.60.133") {
-  compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+  compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -260,7 +260,7 @@ compute_caracal::nova::do_config { 'nova_enable_proxy_headers_parsing': conf_fil
 
 if ($::mgmtnw_ip == "192.168.60.134") {
 
-compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -278,7 +278,7 @@ compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/e
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-dfa-gpu-03
  if ($::mgmtnw_ip == "192.168.60.83") {
-  compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+  compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -302,7 +302,7 @@ compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/e
 
 if ($::mgmtnw_ip == "192.168.60.215") {
 
-compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -320,7 +320,7 @@ compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/e
 
 if ($::mgmtnw_ip == "192.168.60.109") {
 
-compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -336,7 +336,7 @@ compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/e
 
  if ($::mgmtnw_ip == "192.168.60.190") or ($::mgmtnw_ip == "192.168.60.191") {
 
-compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -360,7 +360,7 @@ compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/e
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-np-gpu-01 
  if ($::mgmtnw_ip == "192.168.60.128") {
-  compute_caracal::nova::do_config { 'pci_passthrough_whitelist': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'passthrough_whitelist', value => $compute_caracal::params::pci_passthrough_whitelist, }
+  compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
