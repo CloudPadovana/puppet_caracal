@@ -60,9 +60,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     tag      => ["portal_keys"],
   }
 
-  # TODO verify subscription
-  #File <| tag == 'portal_keys' |> ~> Service["controller_caracal::service::httpd"]
-
+  File <| tag == 'portal_keys' |> ~> Service["controller_caracal::service::httpd"]
 
   ############################################################################
   #  Dashboard
@@ -74,6 +72,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     group    => "root",
     mode     => "0644",
     content  => template("controller_caracal/ssl.conf.erb"),
+    tag      => ["dashboad_cfg"],
   }
   
   file { "/etc/httpd/conf.d/openstack-dashboard.conf":
@@ -82,6 +81,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     group    => "root",
     mode     => "0644",
     content  => file("controller_caracal/openstack-dashboard.conf"),
+    tag      => ["dashboad_cfg"],
   }
  
   file { "/etc/openstack-dashboard/local_settings":
@@ -90,6 +90,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     group    => "apache",
     mode     => "0640",
     content  => template("controller_caracal/local_settings.erb"),
+    tag      => ["dashboad_cfg"],
   }
 
   file { '/var/log/horizon/horizon_log':
@@ -98,7 +99,10 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     owner   => 'apache',
     group   => 'apache',
     mode     => "0644",
+    tag      => ["dashboad_cfg"],
   }
+
+  File <| tag == 'dashboad_cfg' |> ~> Service["controller_caracal::service::httpd"]
 
   ############################################################################
   #  OS-Federation
