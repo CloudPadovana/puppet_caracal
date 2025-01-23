@@ -60,7 +60,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     tag      => ["portal_keys"],
   }
 
-  File <| tag == 'portal_keys' |> ~> Service["controller_caracal::service::httpd"]
+#  File <| tag == 'portal_keys' |> ~> Service["controller_caracal::service::httpd"]
 
   ############################################################################
   #  Dashboard
@@ -93,7 +93,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     tag      => ["dashboad_cfg"],
   }
 
-  file { '/var/log/horizon/horizon_log':
+  file { "/var/log/horizon/horizon_log":
     path    => '/var/log/horizon/horizon.log',
     ensure  => 'present',
     owner   => 'apache',
@@ -102,7 +102,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     tag      => ["dashboad_cfg"],
   }
 
-  File <| tag == 'dashboad_cfg' |> ~> Service["controller_caracal::service::httpd"]
+#  File <| tag == 'dashboad_cfg' |> ~> Service["controller_caracal::service::httpd"]
 
   ############################################################################
   #  OS-Federation
@@ -171,7 +171,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     }
 
     Package["openstack-cloudveneto"] -> File <| tag == 'aai_conf' |>
-
+  }
 
   ############################################################################
   #  Cron-scripts configuration
@@ -210,7 +210,7 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
   ############################################################################
 
   exec { "gate key check":
-    command => "test -e ${gate_credentials}",
+    command => "/usr/bin/test -e ${gate_credentials}",
     returns => 0,
   }
 
@@ -222,6 +222,6 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
     ensure => present,
     path   => '/etc/sysconfig/memcached',
     line   => "OPTIONS=\"-l $::mgmtnw_ip\"",
-    match  => 'OPTIONS'
+    match  => 'OPTIONS',
   }
 }

@@ -1,7 +1,7 @@
 class compute_caracal::stopservices inherits compute_caracal::params {
 
 ########
-#i servizi devono venir spenti solo in fase di installazione dei compute quindi quando la release e' ancora a train
+#i servizi devono venir spenti solo in fase di installazione dei compute quindi quando la release e' ancora a yoga 
 ########
 # Services needed
 #systemctl stop openvswitch
@@ -26,8 +26,7 @@ class compute_caracal::stopservices inherits compute_caracal::params {
             }
     
     exec { 'checkForRelease':
-       # FF command => "/usr/bin/yum list installed | grep centos-release-openstack-rocky ; /usr/bin/echo $?",
-       command => "/usr/bin/yum list installed | grep centos-release-openstack-train ; /usr/bin/echo $?",
+       command => "/usr/bin/yum list installed | grep centos-release-openstack-yoga ; /usr/bin/echo $?",
        returns => "0",
        refreshonly => true,
     }

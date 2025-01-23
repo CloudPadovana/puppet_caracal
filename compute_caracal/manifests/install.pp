@@ -14,7 +14,7 @@ $cloud_role = $compute_caracal::cloud_role
     }
   }
 
-  $oldrelease = [ 'centos-release-openstack-train',
+  $oldrelease = [ 'centos-release-openstack-yoga',
                 ]
 
   $newrelease =  'centos-release-openstack-caracal'
@@ -43,6 +43,11 @@ $cloud_role = $compute_caracal::cloud_role
      $oldrelease :
   } ->
 
+  exec { "yum remove bareos packages":
+         command => "/usr/bin/yum -y remove bareos-common bareos-filedaemon",
+         onlyif => "/usr/bin/yum list installed | grep bareos-common | grep -v 'commandline'",
+  } ->
+
   exec { "removestring_failover":
             command => "/usr/bin/sed -i \"/failovermethod/d\" /etc/yum.repos.d/puppet5.repo",
             onlyif => "/usr/bin/grep failovermethod=priority /etc/yum.repos.d/puppet5.repo",
@@ -69,14 +74,6 @@ $cloud_role = $compute_caracal::cloud_role
       }
   }
 
-### non serve
-#  if $operatingsystemrelease =~ /^9.*/ {
-#      exec { "yum install rdma-core-devel rdma-core ":
-#             command => "/usr/bin/yum -y install rdma-core-devel rdma-core",
-#             timeout => 3600,
-#      }
-#  }
-
 
 # Esegue yum clean all once (lo si fa a meno che non stiamo gia` usando il repo caracal)
   exec { "clean repo cache":
@@ -96,23 +93,21 @@ $cloud_role = $compute_caracal::cloud_role
          require => Package[$yumutils],
   } -> 
 
-## FF in caracal forse questo non serve piu', da provare ##
-  exec { "yum update for update from Train in DELL hosts":
-         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent -x facter update",
-         onlyif => "/bin/rpm -qi dell-system-update | grep 'Architecture:' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'train'",
+  exec { "yum update for update from Yoga in DELL hosts":
+         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent --enablerepo epel -x facter update",
+         onlyif => "/bin/rpm -qi dell-system-update | grep 'Architecture:' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'yoga'",
          timeout => 3600,
   } ->
 
-  exec { "yum update for update from Train":
+  exec { "yum update for update from Yoga":
          command => "/usr/bin/yum -y update",
-         onlyif => "/bin/rpm -qi dell-system-update | grep 'not installed' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'train'",
+         onlyif => "/bin/rpm -qi dell-system-update | grep 'not installed' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'yoga'",
          timeout => 3600,
   } ->
-#####
 
 # Rename nova config file  
   exec { "mv_nova_conf_old":
-         command => "/usr/bin/mv /etc/nova/nova.conf /etc/nova/nova.conf.train",
+         command => "/usr/bin/mv /etc/nova/nova.conf /etc/nova/nova.conf.yoga",
          onlyif  => "/usr/bin/test -e /etc/nova/nova.conf.rpmnew",
   } ->
  
@@ -123,7 +118,7 @@ $cloud_role = $compute_caracal::cloud_role
 
 # Rename neutron config file  
   exec { "mv_neutron_conf_old":
-         command => "/usr/bin/mv /etc/neutron/neutron.conf /etc/neutron/neutron.conf.train",
+         command => "/usr/bin/mv /etc/neutron/neutron.conf /etc/neutron/neutron.conf.yoga",
          onlyif  => "/usr/bin/test -e /etc/neutron/neutron.conf.rpmnew",
   } ->
 
@@ -133,7 +128,7 @@ $cloud_role = $compute_caracal::cloud_role
   } ->
 
   exec { "mv_neutron_openvswitch_old":
-         command => "/usr/bin/mv /etc/neutron/plugins/ml2/openvswitch_agent.ini /etc/neutron/plugins/ml2/openvswitch_agent.ini.train",
+         command => "/usr/bin/mv /etc/neutron/plugins/ml2/openvswitch_agent.ini /etc/neutron/plugins/ml2/openvswitch_agent.ini.yoga",
          onlyif  => "/usr/bin/test -e /etc/neutron/plugins/ml2/openvswitch_agent.ini.rpmnew",
   } ->
 
@@ -144,7 +139,7 @@ $cloud_role = $compute_caracal::cloud_role
 
 
   exec { "mv_neutron_ml2_old":
-         command => "/usr/bin/mv /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugins/ml2/ml2_conf.ini.train",
+         command => "/usr/bin/mv /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugins/ml2/ml2_conf.ini.yoga",
          onlyif  => "/usr/bin/test -e /etc/neutron/plugins/ml2/ml2_conf.ini.rpmnew",
   } ->
 
@@ -170,25 +165,6 @@ $cloud_role = $compute_caracal::cloud_role
     require => Package[$newrelease]
   } ->
 
-# Eseguo uno yum update se il pacchetto python*-networkx.noarch non proviene dal repo caracal 
-# (Il nome del pacchetto varia tra centos7 e centos8)
-# Serve a quanto pare solo per installazioni da scratch su centos8 (cosa che non dovrebbe piu' succedere)
-# Almeno per il momento lo commento
-##
-##  exec { "yum update in DELL hosts":
-##         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent -x facter update",
-##         onlyif => "/bin/rpm -q dell-system-update &&  /usr/bin/yum list installed | grep python3-networkx | grep -v 'centos-openstack-caracal'",
-##         timeout => 3600,
-##
-## } ->
-
- ## exec { "yum update":
- ##       command => "/usr/bin/yum -y update",
- ##        onlyif => "/bin/rpm -q dell-system-update | grep 'not installed' &&  /usr/bin/yum list installed | grep python3-networkx | grep -v 'centos-openstack-caracal'",
- ##       timeout => 3600,
- ## } ->
-
-  
   file_line { '/etc/sudoers.d/neutron  syslog':
                path   => '/etc/sudoers.d/neutron',
                line   => 'Defaults:neutron !requiretty, !syslog',

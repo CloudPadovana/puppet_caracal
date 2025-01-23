@@ -1,10 +1,11 @@
 class controller_caracal::params ($cloud_role){
 
+   #######################
+   # Cloud di produzione #
+   #######################
 
   if $::controller_caracal::cloud_role == "is_production" {
 
-   ##########################################
-   # Cloud di produzione
    $aai_db_host = ""
    $aai_db_name = ""
    $aai_db_port = 0
@@ -361,16 +362,15 @@ class controller_caracal::params ($cloud_role){
   ############################################################################
   #  AAI estensions
   ############################################################################
-  
+
   $enable_aai_ext = false
-  $cap_repo_url = "http://artifacts.pd.infn.it/packages/CAP/openstack-security-integrations_centos8_caracal.repo"
   $notification_plan = "5,10,20"
   $help_url = "https://${site_fqdn}/Users_Guide/html-desktop/"
 
-  $user_on_gate = ""
   $gate_disable_script = ""
   $gate_enable_script = ""
-  $gate_credentials = ""
+  #$user_on_gate = ""
+  #$gate_credentials = ""
 
   ############################################################################
   #  Shibboleth params
@@ -378,16 +378,16 @@ class controller_caracal::params ($cloud_role){
 
   $enable_shib = true
   $shib_info_url = "https://cloud-areapd.pd.infn.it/Users_Guide/html-desktop/"
-  
+
   if $::controller_caracal::cloud_role == "is_production" {
     $infnaai_ent_id = "https://idp.infn.it/saml2/idp/metadata.php"
+    $unipdaai_ent_id = "https://shibidp.cca.unipd.it/idp/shibboleth"
     $shib_testing_md = false
   } else {
     $infnaai_ent_id = "https://idp.infn.it/testing/saml2/idp/metadata.php"
+    $unipdaai_ent_id = "https://shibidpdev.cca.unipd.it/idp/shibboleth"
     $shib_testing_md = true
   }
-
-  $unipdaai_ent_id = "https://shibidp.cca.unipd.it/idp/shibboleth"
 
   ############################################################################
   #  OpenID Connect params
@@ -396,12 +396,21 @@ class controller_caracal::params ($cloud_role){
   if $::controller_caracal::cloud_role == "is_production" {
 
     $enable_oidc = false
-    $enable_infncloud = false
+    $enable_infncloud = true
+
+    $oidc_passphrase = ""
+    $oidc_md_dir     = "/var/cache/httpd/mod_auth_openidc/metadata"
+    $oidc_intro_ep   = "https://iam.cloud.infn.it/introspect"
+
+    $oidc_providers = {}
+
+    $infncloud_clientid   = ""
+    $infncloud_secret     = ""
 
   } else {
 
-    $enable_oidc      = false
-    $enable_infncloud = false
+    $enable_oidc     = false
+    $enable_infncloud = true 
     $oidc_passphrase  = "xxxxxxxxxxx"
     $oidc_md_dir      = "/var/cache/httpd/mod_auth_openidc/metadata"
     $oidc_intro_ep    = ""
