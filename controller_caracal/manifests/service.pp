@@ -30,6 +30,15 @@ file { "/etc/cron.d/fetch-crl":
                    subscribe   => [ Class['controller_caracal::configure_keystone'], Class['controller_caracal::configure_horizon'], Class['controller_caracal::configure_placement'], ],
            }
 
+ # Services for Shibboleth
+    service { "shibd":
+                   ensure     => running,
+                   enable     => true,
+                   hasstatus  => true,
+                   hasrestart => true,
+                   subscribe  => Class['controller_caracal::configure_shibboleth'],
+           }
+
  # Services for Glance
     service { "openstack-glance-api":
                    ensure      => running,
