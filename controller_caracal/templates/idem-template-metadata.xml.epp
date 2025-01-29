@@ -1,7 +1,7 @@
-<%- | String entityid,
-      String info_url,
-      String sp_name,
-      String sp_org
+<%- | String $entityid,
+      String $info_url,
+      String $sp_name,
+      String $sp_org
 | -%>
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -34,7 +34,7 @@
 
   <md:Organization>
     <md:OrganizationName xml:lang="en"><%= $sp_org -%></md:OrganizationName>
-    <md:OrganizationDisplayName xml:lang="en"><%= $sp_name -%> provided by <%= $sp_org -%></md:OrganizationDisplayName>
+    <md:OrganizationDisplayName xml:lang="en"><%= $sp_name %> provided by <%= $sp_org -%></md:OrganizationDisplayName>
     <md:OrganizationURL xml:lang="en"><%= $info_url -%></md:OrganizationURL>
   </md:Organization>
 

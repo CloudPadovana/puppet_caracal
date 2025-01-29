@@ -146,36 +146,6 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
     tag      => ["shibboleth_conf"],
   }
 
-#  controller_caracal::configure_shibboleth::srvmetadata { "/etc/shibboleth/horizon-infn-metadata.xml":
-#    entityid => "https://${site_fqdn}/dashboard-shib",
-#    info_url => "${shib_info_url}",
-#    sp_name  => "Cloud Area Padovana (Horizon)",
-#    sp_org   => "INFN"
-#  }
-
-#  controller_caracal::configure_shibboleth::srvmetadata { "/etc/shibboleth/keystone-infn-metadata.xml":
-#    entityid => "https://${keystone_cap_fqdn}/v3",
-#    info_url => "${shib_info_url}",
-#    sp_name  => "Cloud Area Padovana (Keystone)",
-#    sp_org   => "INFN"
-#  }
-
-
-#  controller_caracal::configure_shibboleth::srvmetadata { "/etc/shibboleth/horizon-unipd-metadata.xml":
-#    entityid => "https://${cv_site_fqdn}/dashboard-shib",
-#    info_url => "${shib_info_url}",
-#    sp_name  => "Cloud Veneto (Horizon)",
-#    sp_org   => "Università degli Studi di Padova"
-#  }
-
-
-#  controller_caracal::configure_shibboleth::srvmetadata { "/etc/shibboleth/keystone-unipd-metadata.xml":
-#    entityid => "https://${keystone_cv_fqdn}/v3",
-#    info_url => "${shib_info_url}",
-#    sp_name  => "Cloud Veneto (Keystone)",
-#    sp_org   => "Università degli Studi di Padova"
-#  }
-
   file { "/etc/shibboleth/shibboleth2.xml":
     ensure   => file,
     owner    => "root",
@@ -187,16 +157,5 @@ class controller_caracal::configure_shibboleth inherits controller_caracal::para
   
   Package["shibboleth"] -> File <| tag == 'shibboleth_sec' |>
   Package["shibboleth"] -> File <| tag == 'shibboleth_conf' |>
-
-#  define srvmetadata ($entityid, $info_url, $sp_name, $sp_org) {
-#    file { "$title":
-#      ensure   => file,
-#      owner    => "root",
-#      group    => "root",
-#      mode     => "0644",
-#      content  => template("controller_caracal/idem-template-metadata.xml.erb"),
-#      tag      => ["shibboleth_conf"],
-#    }
-#  }
 
 }
