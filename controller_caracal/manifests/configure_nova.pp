@@ -118,10 +118,16 @@ define do_config_list ($conf_file, $section, $param, $values) {
    controller_caracal::configure_nova::do_config { 'nova_username': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'username', value => $controller_caracal::params::nova_username, }
    controller_caracal::configure_nova::do_config { 'nova_password': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'password', value => $controller_caracal::params::nova_password, }
    controller_caracal::configure_nova::do_config { 'nova_cafile': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'cafile', value => $controller_caracal::params::cafile, }
-
+   ## FF per caracal
+   controller_caracal::configure_nova::do_config { 'nova_service_token_roles': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'service_token_roles', value => $controller_caracal::params::service_token_roles, }
+   controller_caracal::configure_nova::do_config { 'nova_service_token_roles_required': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'service_token_roles_required', value => $controller_caracal::params::nova_service_token_roles_required, }
+   ###
    # MS per service token
    controller_caracal::configure_nova::do_config { 'nova_service_user_auth_url': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'auth_url', value => $controller_caracal::params::nova_keystone_authtoken_auth_url, }  
    controller_caracal::configure_nova::do_config { 'nova_service_user_auth_plugin': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'auth_type', value => $controller_caracal::params::auth_type, }
+   ## FF per caracal
+   controller_caracal::configure_nova::do_config { 'nova_service_user_auth_strategy': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'auth_strategy', value => $controller_caracal::params::auth_strategy, }
+   ###
    controller_caracal::configure_nova::do_config { 'nova_service_user_project_domain_name': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'project_domain_name', value => $controller_caracal::params::project_domain_name, }
    controller_caracal::configure_nova::do_config { 'nova_service_user_user_domain_name': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'user_domain_name', value => $controller_caracal::params::user_domain_name, }
    controller_caracal::configure_nova::do_config { 'nova_service_user_project_name': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'project_name', value => $controller_caracal::params::project_name, }
@@ -129,18 +135,9 @@ define do_config_list ($conf_file, $section, $param, $values) {
    controller_caracal::configure_nova::do_config { 'nova_service_user_password': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'password', value => $controller_caracal::params::nova_password, }
    controller_caracal::configure_nova::do_config { 'nova_service_user_cafile': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'cafile', value => $controller_caracal::params::cafile, }
    controller_caracal::configure_nova::do_config { 'nova_service_user_send_service_user_token': conf_file => '/etc/nova/nova.conf', section => 'service_user', param => 'send_service_user_token', value => $controller_caracal::params::send_service_user_token, }
-   ###
-
-  # MS In xena da` un warning se questo non e` a true
-  # Ma almeno per qualche servizio da` problemi se e` a true
-#   controller_caracal::configure_nova::do_config { 'nova_service_token_roles_required': conf_file => '/etc/nova/nova.conf', section => 'keystone_authtoken', param => 'service_token_roles_required', value => $controller_caracal::params::nova_service_token_roles_required, }
-
    controller_caracal::configure_nova::do_config { 'nova_inject_password': conf_file => '/etc/nova/nova.conf', section => 'libvirt', param => 'inject_password', value => $controller_caracal::params::nova_inject_password, }
    controller_caracal::configure_nova::do_config { 'nova_inject_key': conf_file => '/etc/nova/nova.conf', section => 'libvirt', param => 'inject_key', value => $controller_caracal::params::nova_inject_key, }
    controller_caracal::configure_nova::do_config { 'nova_inject_partition': conf_file => '/etc/nova/nova.conf', section => 'libvirt', param => 'inject_partition', value => $controller_caracal::params::nova_inject_partition, }
-## FF in xena e' deprecato
-#   controller_caracal::configure_nova::do_config { 'nova_glance_api_servers': conf_file => '/etc/nova/nova.conf', section => 'glance', param => 'api_servers', value => $controller_caracal::params::glance_api_servers, }
-##
    controller_caracal::configure_nova::do_config { 'nova_neutron_endpoint_override': conf_file => '/etc/nova/nova.conf', section => 'neutron', param => 'endpoint_override', value => $controller_caracal::params::neutron_endpoint_override, }
    controller_caracal::configure_nova::do_config { 'nova_neutron_auth_type': conf_file => '/etc/nova/nova.conf', section => 'neutron', param => 'auth_type', value => $controller_caracal::params::auth_type, }
    controller_caracal::configure_nova::do_config { 'nova_neutron_auth_url': conf_file => '/etc/nova/nova.conf', section => 'neutron', param => 'auth_url', value => $controller_caracal::params::neutron_auth_url, }

@@ -2,7 +2,7 @@ class controller_caracal::configure_heat inherits controller_caracal::params {
 #
 # Questa classe:
 # - popola il file /etc/heat/heat.conf
-# 
+# - usa file di policy /file/heat.policy.yaml 
   
 define do_config ($conf_file, $section, $param, $value) {
              exec { "${name}":
@@ -86,13 +86,6 @@ define remove_config ($conf_file, $section, $param, $value) {
     value     => $controller_caracal::params::heat_db,
   }
   
-# MS auth_uri deprecated. Use option "www_authenticate_uri"
-#  controller_caracal::configure_heat::do_config { 'heat_auth_uri':
-#    conf_file => '/etc/heat/heat.conf',
-#    section   => 'keystone_authtoken',
-#    param     => 'auth_uri',
-#    value     => $controller_caracal::params::auth_uri,
-#  }   
   controller_caracal::configure_heat::do_config { 'heat_auth_uri':
     conf_file => '/etc/heat/heat.conf',
     section   => 'keystone_authtoken',
@@ -368,6 +361,12 @@ define remove_config ($conf_file, $section, $param, $value) {
     value     => $controller_caracal::params::enable_proxy_headers_parsing,
   }
 
+  controller_caracal::configure_heat::do_config { 'heat_policy_file': 
+     conf_file => '/etc/heat/heat.conf', 
+     section => 'oslo_policy', 
+     param => 'policy_file', 
+     value => $controller_caracal::params::heat_policy_file, }       
+
   controller_caracal::configure_heat::do_config { 'heat_rabbit_ha_queues':
     conf_file => '/etc/heat/heat.conf',
     section   => 'oslo_messaging_rabbit',
@@ -382,6 +381,14 @@ define remove_config ($conf_file, $section, $param, $value) {
     value     => $controller_caracal::params::amqp_durable_queues,
   }
 
+file {'heat_policy.yaml':
+             source      => 'puppet:///modules/controller_caracal/heat.policy.yaml',
+             path        => '/etc/heat/policy.yaml',
+             backup      => true,
+             owner   => root,
+             group   => heat,
+             mode    => "0640",
+      }
 
        
 }

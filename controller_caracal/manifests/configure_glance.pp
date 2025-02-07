@@ -9,15 +9,14 @@ class controller_caracal::configure_glance inherits controller_caracal::params {
 # role:admin required for delete_image_location, get_image_location, set_image_location
 # See https://wiki.openstack.org/wiki/OSSN/OSSN-0065
 
-# Per glance non serve piu` un file di policy custom
-# I default vanno bene
-#    file { "/etc/glance/policy.yaml":
-#            ensure   => file,
-#            owner    => "root",
-#            group    => "glance",
-#            mode     => "0640",
-#            source  => "puppet:///modules/controller_caracal/glance.policy.yaml",
-#          }
+    file { "glance.policy.yaml":
+            ensure   => file,
+            owner    => "root",
+            group    => "glance",
+            mode     => "0640",
+            path     => '/etc/glance/glancepolicyold.yaml',
+            source  => "puppet:///modules/controller_caracal/glancepolicyold.yaml",
+          }
           
   
 
@@ -101,6 +100,9 @@ define remove_config ($conf_file, $section, $param, $value) {
   controller_caracal::configure_glance::do_config { 'glance_api_rabbit_ha_queues': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_messaging_rabbit', param => 'rabbit_ha_queues', value => $controller_caracal::params::rabbit_ha_queues, }
   controller_caracal::configure_glance::do_config { 'glance_api_amqp_durable_queues': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_messaging_rabbit', param => 'amqp_durable_queues', value => $controller_caracal::params::amqp_durable_queues, }
 
-#  controller_caracal::configure_glance::do_config { 'glance_policy': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_policy', param => 'policy_file', value => $controller_caracal::params::glance_policy_file, }
-
+### FF per caracal
+  controller_caracal::configure_glance::do_config { 'glance_oslo_policy_enforce_scope': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_policy', param => 'enforce_scope', value => $controller_caracal::params::glance_enforce_scope, }
+  controller_caracal::configure_glance::do_config { 'glance_oslo_policy_enforce_new_defaults': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_policy', param => 'enforce_new_defaults', value => $controller_caracal::params::glance_enforce_new_defaults, }
+  controller_caracal::configure_glance::do_config { 'glance_oslo_policy_policy_file': conf_file => '/etc/glance/glance-api.conf', section => 'oslo_policy', param => 'policy_file', value => $controller_caracal::params::glance_policy_file, }
+###
 }

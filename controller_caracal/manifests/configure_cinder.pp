@@ -59,6 +59,17 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_cinder::do_config { 'cinder_keystone_authtoken_service_token_roles_required': conf_file => '/etc/cinder/cinder.conf', section => 'keystone_authtoken', param => 'service_token_roles_required', value => $controller_caracal::params::service_token_roles_required, }
    ##
    controller_caracal::configure_cinder::do_config { 'cinder_lock_path': conf_file => '/etc/cinder/cinder.conf', section => 'oslo_concurrency', param => 'lock_path', value => $controller_caracal::params::cinder_lock_path, }
+   ## FF per caracal aggiunto service_user ##
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_auth_url': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'auth_url', value => $controller_caracal::params::cinder_service_user_auth_url, }   
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_auth_type': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'auth_type', value => $controller_caracal::params::auth_type, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_auth_strategy': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'auth_strategy', value => $controller_caracal::params::auth_strategy, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_project_domain_name': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'project_domain_name', value => $controller_caracal::params::project_domain_name, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_user_domain_name': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'user_domain_name', value => $controller_caracal::params::user_domain_name, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_project_name': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'project_name', value => $controller_caracal::params::project_name, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_username': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'username', value => $controller_caracal::params::cinder_username, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_password': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'password', value => $controller_caracal::params::cinder_password, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_cafile': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'cafile', value => $controller_caracal::params::cafile, }
+   controller_caracal::configure_cinder::do_config { 'cinder_service_user_send_service_user_token': conf_file => '/etc/cinder/cinder.conf', section => 'service_user', param => 'send_service_user_token', value => $controller_caracal::params::send_service_user_token, }
 
 ############# Ceph configuration
  controller_caracal::configure_cinder::do_config { 'cinder_ceph_volume_group': conf_file => '/etc/cinder/cinder.conf', section => 'ceph', param => 'volume_group', value => $controller_caracal::params::ceph_volume_group, }
@@ -123,6 +134,7 @@ define remove_config ($conf_file, $section, $param, $value) {
 #######Proxy headers parsing
 controller_caracal::configure_cinder::do_config { 'cinder_enable_proxy_headers_parsing': conf_file => '/etc/cinder/cinder.conf', section => 'oslo_middleware', param => 'enable_proxy_headers_parsing', value => $controller_caracal::params::enable_proxy_headers_parsing, }       
 ####################       
+controller_caracal::configure_cinder::do_config { 'cinder_policy_file': conf_file => '/etc/cinder/cinder.conf', section => 'oslo_policy', param => 'policy_file', value => $controller_caracal::params::cinder_policy_file, }       
 
   controller_caracal::configure_cinder::do_config { 'cinder_rabbit_ha_queues': conf_file => '/etc/cinder/cinder.conf', section => 'oslo_messaging_rabbit', param => 'rabbit_ha_queues', value => $controller_caracal::params::rabbit_ha_queues, }
   controller_caracal::configure_cinder::do_config { 'cinder_amqp_durable_queues': conf_file => '/etc/cinder/cinder.conf', section => 'oslo_messaging_rabbit', param => 'amqp_durable_queues', value => $controller_caracal::params::amqp_durable_queues, }
@@ -141,7 +153,7 @@ controller_caracal::configure_cinder::do_config { 'cinder_enable_proxy_headers_p
 #
 #       
 file {'cinder_policy.yaml':
-             source      => 'puppet:///modules/controller_caracal/cinder_policy.yaml',
+             source      => 'puppet:///modules/controller_caracal/cinder.policy.yaml',
              path        => '/etc/cinder/policy.yaml',
              backup      => true,
              owner   => root,

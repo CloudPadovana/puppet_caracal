@@ -8,8 +8,9 @@ class controller_caracal::configure_neutron inherits controller_caracal::params 
 # - popola il file /etc/neutron/l3_agent.ini
 # - popola il file /etc/neutron/dhcp_agent.ini
 # - popola il file /etc/neutron/metadata_agent.ini
-# - Definisce il link /etc/neutron/plugin.ini --> /etc/neutron/plugins/ml2/ml2_conf.ini
-# - Modifica il file /etc/sudoers.d/neutron in modo che non venga loggato in /var/log/secure un msg ogni 2 sec
+# - definisce il link /etc/neutron/plugin.ini --> /etc/neutron/plugins/ml2/ml2_conf.ini
+# - modifica il file /etc/sudoers.d/neutron in modo che non venga loggato in /var/log/secure un msg ogni 2 sec
+# - usa il file di policy.yaml files/neutron.policy.yaml 
 # 
 
   
@@ -37,8 +38,7 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_neutron::do_config { 'neutron_core_plugin': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'core_plugin', value => $controller_caracal::params::neutron_core_plugin, }
    controller_caracal::configure_neutron::do_config { 'neutron_service_plugins': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'service_plugins', value => $controller_caracal::params::neutron_service_plugins, }
 
-  # deprecato in caracal
-  # comunque settato in /usr/share/neutron/neutron-dist.conf
+  # deprecato e comunque settato in /usr/share/neutron/neutron-dist.conf
   # controller_caracal::configure_neutron::do_config { 'neutron_allow_overlapping_ips': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'allow_overlapping_ips', value => $controller_caracal::params::neutron_allow_overlapping_ips, }
    controller_caracal::configure_neutron::do_config { 'neutron_notify_nova_on_port_status_changes': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'notify_nova_on_port_status_changes', value => $controller_caracal::params::neutron_notify_nova_on_port_status_changes, }
    controller_caracal::configure_neutron::do_config { 'neutron_notify_nova_on_port_data_changes': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'notify_nova_on_port_data_changes', value => $controller_caracal::params::neutron_notify_nova_on_port_data_changes, }
@@ -46,9 +46,6 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_neutron::do_config { 'neutron_l3_ha': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'l3_ha', value => $controller_caracal::params::neutron_l3_ha, }
    controller_caracal::configure_neutron::do_config { 'neutron_allow_automatic_l3agent_failover': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'allow_automatic_l3agent_failover', value => $controller_caracal::params::neutron_allow_automatic_l3agent_failover, }
    controller_caracal::configure_neutron::do_config { 'neutron_max_l3_agents_per_router': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'max_l3_agents_per_router', value => $controller_caracal::params::neutron_max_l3_agents_per_router, }
-       
-#MS: The min_l3_agents_per_router configuration option was deprecated in Newton cycle and removed in Ocata       
-#   controller_caracal::configure_neutron::do_config { 'neutron_min_l3_agents_per_router': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'min_l3_agents_per_router', value => $controller_caracal::params::neutron_min_l3_agents_per_router, }
    controller_caracal::configure_neutron::do_config { 'neutron_allow_automatic_dhcp_failover': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'allow_automatic_dhcp_failover', value => $controller_caracal::params::allow_automatic_dhcp_failover, }
    controller_caracal::configure_neutron::do_config { 'neutron_api_workers': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'api_workers', value => $controller_caracal::params::neutron_api_workers, }
 
@@ -58,12 +55,9 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_neutron::do_config { 'neutron_global_physnet_mtu': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'global_physnet_mtu', value => $controller_caracal::params::neutron_global_physnet_mtu, }
 
 
-
    controller_caracal::configure_neutron::do_config { 'neutron_db': conf_file => '/etc/neutron/neutron.conf', section => 'database', param => 'connection', value => $controller_caracal::params::neutron_db, }
 
-       controller_caracal::configure_neutron::do_config { 'neutron_lock_path': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_concurrency', param => 'lock_path', value => $controller_caracal::params::neutron_lock_path, }
-   ##FF in rocky [keystone_authtoken] auth_uri diventa www_authenticate_uri
-   #controller_caracal::configure_neutron::do_config { 'neutron_auth_uri': conf_file => '/etc/neutron/neutron.conf', section => 'keystone_authtoken', param => 'auth_uri', value => $controller_caracal::params::auth_uri, }   
+   controller_caracal::configure_neutron::do_config { 'neutron_lock_path': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_concurrency', param => 'lock_path', value => $controller_caracal::params::neutron_lock_path, }
    controller_caracal::configure_neutron::do_config { 'neutron_www_authenticate_uri': conf_file => '/etc/neutron/neutron.conf', section => 'keystone_authtoken', param => 'www_authenticate_uri', value => $controller_caracal::params::www_authenticate_uri, }   
    ##FF in rocky [keystone_authtoken] auth_url passa da 35357 a 5000
    controller_caracal::configure_neutron::do_config { 'neutron_keystone_authtoken_auth_url': conf_file => '/etc/neutron/neutron.conf', section => 'keystone_authtoken', param => 'auth_url', value => $controller_caracal::params::neutron_keystone_authtoken_auth_url, }
@@ -80,8 +74,6 @@ define remove_config ($conf_file, $section, $param, $value) {
     # Ma se si mette a true non funziona piu` nulla. Es. un nova list ritorna "Networking client is experiencing an unauthorized exception"
 #   controller_caracal::configure_neutron::do_config { 'neutron_service_token_roles_required': conf_file => '/etc/neutron/neutron.conf', section => 'keystone_authtoken', param => 'service_to#ken_roles_required', value => $controller_caracal::params::neutron_service_token_roles_required, }
 
-
-
    ##FF in rocky [nova] auth_url da 35357 diventa 5000
    controller_caracal::configure_neutron::do_config { 'neutron_nova_auth_url': conf_file => '/etc/neutron/neutron.conf', section => 'nova', param => 'auth_url', value => $controller_caracal::params::neutron_auth_url, }
    controller_caracal::configure_neutron::do_config { 'neutron_nova_auth_type': conf_file => '/etc/neutron/neutron.conf', section => 'nova', param => 'auth_type', value => $controller_caracal::params::auth_type, }
@@ -94,8 +86,11 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_neutron::do_config { 'neutron_nova_cafile': conf_file => '/etc/neutron/neutron.conf', section => 'nova', param => 'cafile', value => $controller_caracal::params::cafile, }
 
 #######Proxy headers parsing
-controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers_parsing': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_middleware', param => 'enable_proxy_headers_parsing', value => $controller_caracal::params::enable_proxy_headers_parsing, }
+   controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers_parsing': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_middleware', param => 'enable_proxy_headers_parsing', value => $controller_caracal::params::enable_proxy_headers_parsing, }
 
+## FF per caracal
+   controller_caracal::configure_neutron::do_config { 'neutron_policy_file': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_policy', param => 'policy_file', value => $controller_caracal::params::neutron_policy_file, }
+###
 
 #
 # Setting di quote di default per nuovi progetti, in modo da non dare la possibilita` di creare nuove reti, nuovi
@@ -110,8 +105,6 @@ controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers
 
   controller_caracal::configure_neutron::do_config { 'neutron_rabbit_ha_queues': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_messaging_rabbit', param => 'rabbit_ha_queues', value => $controller_caracal::params::rabbit_ha_queues, }
   controller_caracal::configure_neutron::do_config { 'neutron_amqp_durable_queues': conf_file => '/etc/neutron/neutron.conf', section => 'oslo_messaging_rabbit', param => 'amqp_durable_queues', value => $controller_caracal::params::amqp_durable_queues, }
-
-
 
 
    # ml2_conf.ini
@@ -143,8 +136,6 @@ controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers
 
    controller_caracal::configure_neutron::do_config { 'ovs_tunnel_types': conf_file => '/etc/neutron/plugins/ml2/openvswitch_agent.ini', section => 'agent', param => 'tunnel_types', value => $controller_caracal::params::ml2_tunnel_types, }
    controller_caracal::configure_neutron::do_config { 'ovs_local_ip': conf_file => '/etc/neutron/plugins/ml2/openvswitch_agent.ini', section => 'ovs', param => 'local_ip', value => $controller_caracal::params::ml2_local_ip, }
-   ### FF ADDED in  PIKE: A new config option bridge_mac_table_size has been added for Neutron OVS agent. This value will be set on every Open vSwitch bridge managed by the openvswitch-neutron-agent in other_config:mac-table-size column in ovsdb. Default value for this new option is set to 50000 and it should be enough for most systems.
-   ###
    controller_caracal::configure_neutron::do_config { 'ovs_bridge_mappings': conf_file => '/etc/neutron/plugins/ml2/openvswitch_agent.ini', section => 'ovs', param => 'bridge_mappings', value => $controller_caracal::params::ml2_bridge_mappings, }
    controller_caracal::configure_neutron::do_config { 'ovs_enable_tunneling': conf_file => '/etc/neutron/plugins/ml2/openvswitch_agent.ini', section => 'ovs', param => 'enable_tunneling', value => $controller_caracal::params::ovs_enable_tunneling, }
    controller_caracal::configure_neutron::do_config { 'ovs_of_inactivity_probe': conf_file => '/etc/neutron/plugins/ml2/openvswitch_agent.ini', section => 'ovs', param => 'of_inactivity_probe', value => $controller_caracal::params::of_inactivity_probe, }
@@ -167,8 +158,6 @@ controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers
    #controller_caracal::configure_neutron::do_config { 'l3_gateway_external_network_id': conf_file => '/etc/neutron/l3_agent.ini', section => 'DEFAULT', param => 'gateway_external_network_id', value => $controller_caracal::params::l3_gateway_external_network_id, }
    ## MS external_network_bridge reported as deprecated in the log file. Ma la documentazione dice di settarlo ...
    ##controller_caracal::configure_neutron::do_config { 'l3_external_network_id': conf_file => '/etc/neutron/l3_agent.ini', section => 'DEFAULT', param => 'external_network_bridge', value => $controller_caracal::params::l3_external_network_id, }
-   ## GS in xena external_network_bridge e' deprecato e va rimosso
-   #controller_caracal::configure_neutron::do_config { 'l3_external_network_bridge': conf_file => '/etc/neutron/l3_agent.ini', section => 'DEFAULT', param => 'external_network_bridge', value => $controller_caracal::params::l3_external_network_bridge, }
    ###
 
 
@@ -177,28 +166,23 @@ controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers
   controller_caracal::configure_neutron::do_config { 'dhcp_interface_driver': conf_file => '/etc/neutron/dhcp_agent.ini', section => 'DEFAULT', param => 'interface_driver', value => $controller_caracal::params::interface_driver, }
   controller_caracal::configure_neutron::do_config { 'dhcp_driver': conf_file => '/etc/neutron/dhcp_agent.ini', section => 'DEFAULT', param => 'dhcp_driver', value => $controller_caracal::params::dhcp_driver, }
 
-#  if $::controller_caracal::cloud_role == "is_test" {
-      file { "$controller_caracal::params::dnsmasq_config_file":
+  file { "$controller_caracal::params::dnsmasq_config_file":
         ensure   => file,
         owner    => "root",
         group    => "neutron",
         mode     => "0644",
         content  => template("controller_caracal/dnsmasq-neutron.conf.erb"),
-    }
-    controller_caracal::configure_neutron::do_config { 'dnsmasq_config_file': 
+  }
+  controller_caracal::configure_neutron::do_config { 'dnsmasq_config_file': 
       conf_file => '/etc/neutron/dhcp_agent.ini', 
       section => 'DEFAULT', 
       param => 'dnsmasq_config_file', 
       value => $controller_caracal::params::dnsmasq_config_file,
-    }
- # }
+  }
 
 # metadata_agent.ini
    controller_caracal::configure_neutron::do_config { 'metadata_auth_ca_cert': conf_file => '/etc/neutron/metadata_agent.ini', section => 'DEFAULT', param => 'auth_ca_cert', value => $controller_caracal::params::cafile, }
-   ### FF DEPRECATED in PIKE nova_metadata_ip --> nova_metadata_host
-   #controller_caracal::configure_neutron::do_config { 'metadata_ip': conf_file => '/etc/neutron/metadata_agent.ini', section => 'DEFAULT', param => 'nova_metadata_ip', value => $controller_caracal::params::vip_mgmt, }
    controller_caracal::configure_neutron::do_config { 'metadata_ip': conf_file => '/etc/neutron/metadata_agent.ini', section => 'DEFAULT', param => 'nova_metadata_host', value => $controller_caracal::params::vip_mgmt, }
-   ###
    controller_caracal::configure_neutron::do_config { 'metadata_metadata_proxy_shared_secret': conf_file => '/etc/neutron/metadata_agent.ini', section => 'DEFAULT', param => 'metadata_proxy_shared_secret', value => $controller_caracal::params::metadata_proxy_shared_secret, }
   
 ################
@@ -226,7 +210,17 @@ controller_caracal::configure_neutron::do_config { 'neutron_enable_proxy_headers
 
 
 ################
+## FF per caracal
+  file {'neutron.policy.yaml':
+           source      => 'puppet:///modules/controller_caracal/neutron.policy.yaml',
+           path        => '/etc/neutron/policy.yaml',
+           backup      => true,
+           owner   => root,
+           group   => neutron,
+           mode    => "0640",
 
+         }
+###
 
   file {'/etc/neutron/plugin.ini':
               ensure      => link,

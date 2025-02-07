@@ -120,6 +120,7 @@ class controller_caracal::params ($cloud_role){
    $admin_password = ''
    $auth_uri = 'http://xxx.xxx.xxx.xxx:5000'
    $auth_url = 'http://xxx.xxx.xxx.xxx:5000'
+   $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cinder_ceph_ec_rbd_pool = ''
    $cinder_ceph_rbd_pool = ''
    $cinder_ceph_rbd_secret_uuid = ''
@@ -224,6 +225,9 @@ class controller_caracal::params ($cloud_role){
    $cinder_iscsi_shares_config = '/etc/cinder/shares'
    $cinder_lock_path = '/var/lib/cinder/tmp'
    $cinder_my_ip = $::mgmt_ip
+   ## FF per caracal
+   $cinder_policy_file = '/etc/neutron/policy.yaml'
+   ###
    $cinder_service_token_roles_required = true
    $cinder_username = 'cinder'
    $dhcp_agents_per_network = '2'
@@ -250,12 +254,19 @@ class controller_caracal::params ($cloud_role){
    $glance_api_enabled_backends	= 'http:http,rbd:rbd'
    $glance_api_filesystem_store_datadir = '/Images/staging/'
    $glance_log_dir = '/var/log/glance'
-   $glance_policy_file = '/etc/glance/policy.yaml'
+   ### FF per Caracal #################
+   $glance_policy_file = '/etc/glance/glancepolicyold.yaml'
+   $glance_enforce_scope = true
+   $glance_enforce_new_defaults = true
+   #####################################
    $glance_service_token_roles_required = true
    $glance_store_datadir = '/var/lib/glance/images/'
    $glance_username = 'glance'
    $heat_endpoint_type = 'publicURL'
    $heat_insecure = true
+   ## FF per caracal
+   $heat_policy_file = '/etc/heat/policy.yaml'
+   ###
    $heat_service_token_roles_required = true
    $heat_stack_domain_admin = 'heat_domain_admin'
    $heat_stack_user_domain_name = 'heat'
@@ -295,6 +306,9 @@ class controller_caracal::params ($cloud_role){
    $neutron_service_plugins = 'router'
    $neutron_service_token_roles_required = true
    $neutron_username = 'neutron'
+   ## FF per caracal
+   $neutron_policy_file = '/etc/neutron/policy.yaml'
+   ###
    $nova_cinder_catalog_info = 'volumev3::internalURL'
    $nova_cpu_allocation_ratio = '4.0'
    $nova_default_schedule_zone = 'nova'

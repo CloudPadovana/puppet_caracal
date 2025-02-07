@@ -1,60 +1,215 @@
+#DEP "rule:context_is_admin":"is_admin:True" 
+#NEW "rule:context_is_admin":"role:admin"
+#"rule:context_is_admin": "rule:context_is_admin"
+
+# Default rule for Project level non admin APIs.
+#"project_member_api": "role:member and project_id:%(project_id)s"
+# DEPRECATED
+# "rule:admin_or_owner":"is_admin:True or project_id:%(project_id)s"
+# has been deprecated since 21.0.0 in favor of
+# "project_member_api":"role:member and project_id:%(project_id)s".
+#"rule:admin_or_owner": "rule:project_member_api"
+
+# Default rule for Project level read only APIs.
+#"project_reader_api": "role:reader and project_id:%(project_id)s"  
+# DEPRECATED
+# "rule:admin_or_owner":"is_admin:True or project_id:%(project_id)s"
+# has been deprecated since 21.0.0 in favor of
+# "project_reader_api":"role:reader and project_id:%(project_id)s".
+#"rule:admin_or_owner": "rule:project_reader_api"
+
+# Default rule for Project Member or admin APIs.
+#"project_member_or_admin": "rule:project_member_api or rule:context_is_admin"
+# DEPRECATED
+# "rule:admin_or_owner":"is_admin:True or project_id:%(project_id)s"
+# has been deprecated since 21.0.0 in favor of
+# "project_member_or_admin":"rule:project_member_api or rule:context_is_admin".
+#"rule:admin_or_owner": "rule:project_member_or_admin"
+
+# Default rule for Project reader or admin APIs.
+#"project_reader_or_admin": "rule:project_reader_api or rule:context_is_admin"
+# DEPRECATED
+# "rule:admin_or_owner":"is_admin:True or project_id:%(project_id)s"
+# has been deprecated since 21.0.0 in favor of
+# "project_reader_or_admin":"rule:project_reader_api or rule:context_is_admin".
+#"rule:admin_or_owner": "rule:project_reader_or_admin"
+
+# Show usage statistics for a specific tenant
+# GET  /os-simple-tenant-usage/{tenant_id}
+# Intended scope(s): project
+"os_compute_api:os-simple-tenant-usage:show": "rule:project_member_or_admin"
+
+"os_compute_api:servers:show": "rule:project_member_or_admin" 
+  
+# List all servers with detailed information
+# GET  /servers/detail
+# Intended scope(s): project
+"os_compute_api:servers:detail": "rule:project_member_or_admin"
+
+# Show a server
+# GET  /servers/{server_id}
+# Intended scope(s): project
+"os_compute_api:servers:show": "rule:project_member_or_admin"
+
+"os_compute_api:os-volumes:list": "rule:project_member_or_admin"
+"os_compute_api:os-volumes:detail": "rule:project_member_or_admin"
+"os_compute_api:os-volumes:show": "rule:project_member_or_admin"
+"os_compute_api:os-volumes-attachments:index": "rule:project_member_or_admin"
+
+"os_compute_api:os-instance-actions:list": "rule:project_member_or_admin"
+
+# Starting with microversion 2.47, the flavor and its extra specs used
+# for a server is also returned in the response when showing server
+# details, updating a server or rebuilding a server.
+# GET  /servers/detail
+# GET  /servers/{server_id}
+# PUT  /servers/{server_id}
+# POST  /servers/{server_id}/action (rebuild)
+# Intended scope(s): project
+"os_compute_api:servers:show:flavor-extra-specs": "rule:project_member_or_admin"
+
+"os_compute_api:os-flavor-extra-specs:show": "rule:project_member_or_admin"
+
+"os_compute_api:os-flavor-extra-specs:index": "rule:project_member_or_admin"
+
+# List all server groups
+# GET  /os-server-groups
+# Intended scope(s): project
+"os_compute_api:os-server-groups:index": "rule:project_member_or_admin"
+
+# List networks for the project.
+#
+# This API is proxy calls to the Network service. This is deprecated.
+# GET  /os-networks
+# Intended scope(s): project
+"os_compute_api:os-networks:list": "rule:project_member_or_admin"
+  
+# This API is proxy calls to the Network service. This is deprecated.
+# GET  /os-networks/{network_id}
+# Intended scope(s): project
+"os_compute_api:os-networks:show": "rule:project_member_or_admin"
+
+
+# List security groups. This API is deprecated.
+# GET  /os-security-groups
+# Intended scope(s): project
+"os_compute_api:os-security-groups:get": "rule:project_member_or_admin"
+
+# Show security group. This API is deprecated.
+# GET  /os-security-groups/{security_group_id}
+# Intended scope(s): project
+"os_compute_api:os-security-groups:show": "rule:project_member_or_admin"
+
+# Create security group. This API is deprecated.
+# POST  /os-security-groups
+# Intended scope(s): project
+"os_compute_api:os-security-groups:create": "rule:project_member_or_admin"
+
+# Update security group. This API is deprecated.
+# PUT  /os-security-groups/{security_group_id}
+# Intended scope(s): project
+"os_compute_api:os-security-groups:update": "rule:project_member_or_admin"
+  
+# Delete security group. This API is deprecated.
+# DELETE  /os-security-groups/{security_group_id}
+# Intended scope(s): project
+"os_compute_api:os-security-groups:delete": "rule:project_member_or_admin"
+
+# List security groups of server.
+# GET  /servers/{server_id}/os-security-groups
+# Intended scope(s): project
+"os_compute_api:os-security-groups:list": "rule:project_member_or_admin"  
+
+# Add security groups to server.
+# POST  /servers/{server_id}/action (addSecurityGroup)
+# Intended scope(s): project
+"os_compute_api:os-security-groups:add": "rule:project_member_or_admin"
+
+# Remove security groups from server.
+# POST  /servers/{server_id}/action (removeSecurityGroup)
+# Intended scope(s): project
+"os_compute_api:os-security-groups:remove": "rule:project_member_or_admin"
+
+
+# Create security group Rule. This API is deprecated.
+# POST  /os-security-group-rules
+# Intended scope(s): project
+"os_compute_api:os-security-groups:rule:create": "rule:project_member_or_admin"
+
+# Delete security group Rule. This API is deprecated.
+# DELETE  /os-security-group-rules/{security_group_id}
+# Intended scope(s): project
+"os_compute_api:os-security-groups:rule:delete": "rule:project_member_or_admin"
+
+# Show details of a server group
+# GET  /os-server-groups/{server_group_id}
+# Intended scope(s): project
+"os_compute_api:os-server-groups:show": "rule:project_member_or_admin"
+  
 # Pause a server
 # POST  /servers/{server_id}/action (pause)
 # Intended scope(s): system, project
-"os_compute_api:os-pause-server:pause": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-pause-server:pause": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Delete a server
 # DELETE  /servers/{server_id}
 # Intended scope(s): system, project
-"os_compute_api:servers:delete": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:servers:delete": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Resize a server
 # POST  /servers/{server_id}/action (resize)
 # Intended scope(s): system, project
-"os_compute_api:servers:resize": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:servers:resize": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Rebuild a server
 # POST  /servers/{server_id}/action (rebuild)
 # Intended scope(s): system, project
-"os_compute_api:servers:rebuild": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:servers:rebuild": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Stop a server
 # POST  /servers/{server_id}/action (os-stop)
 # Intended scope(s): system, project
-"os_compute_api:servers:stop": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:servers:stop": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Suspend server
 # POST  /servers/{server_id}/action (suspend)
 # Intended scope(s): system, project
-"os_compute_api:os-suspend-server:suspend": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-suspend-server:suspend": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Lock a server
 # POST  /servers/{server_id}/action (lock)
-"os_compute_api:os-lock-server:lock": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-lock-server:lock": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Rescue/unrescue a server
 # POST  /servers/{server_id}/action (rescue)
 # POST  /servers/{server_id}/action (unrescue)
-"os_compute_api:os-rescue": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-rescue": "rule:context_is_admin or user_id:%(user_id)s"
+"os_compute_api:os-unrescue": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Change the administrative password for a server
 # POST  /servers/{server_id}/action (changePassword)
-"os_compute_api:os-admin-password": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-admin-password": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Evacuate a server from a failed host to a new host
 # POST  /servers/{server_id}/action (evacuate)
-"os_compute_api:os-evacuate": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-evacuate": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Restore a soft deleted server or force delete a server before
 # deferred cleanup
 # POST  /servers/{server_id}/action (restore)
 # POST  /servers/{server_id}/action (forceDelete)
-"os_compute_api:os-deferred-delete": "rule:admin_api or user_id:%(user_id)s"
+#"os_compute_api:os-deferred-delete": "rule:context_is_admin or user_id:%(user_id)s"
 
+###come l default, posso commentarle: ####
+#"os_compute_api:os-deferred-delete:restore": "rule:project_member_or_admin"
+#"os_compute_api:os-deferred-delete:force": "rule:project_member_or_admin"
+###############
+
+#
 # Shelve server
 # POST  /servers/{server_id}/action (shelve)
-"os_compute_api:os-shelve:shelve": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:os-shelve:shelve": "rule:context_is_admin or user_id:%(user_id)s"
 
 # Trigger crash dump in a server
 # POST  /servers/{server_id}/action (trigger_crash_dump)
-"os_compute_api:servers:trigger_crash_dump": "rule:admin_api or user_id:%(user_id)s"
+"os_compute_api:servers:trigger_crash_dump": "rule:context_is_admin or user_id:%(user_id)s"
