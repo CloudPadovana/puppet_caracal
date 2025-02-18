@@ -113,6 +113,7 @@ define remove_config ($conf_file, $section, $param, $value) {
    controller_caracal::configure_neutron::do_config { 'ml2_tenant_network_types': conf_file => '/etc/neutron/plugins/ml2/ml2_conf.ini', section => 'ml2', param => 'tenant_network_types', value => $controller_caracal::params::ml2_tenant_network_types, }
    controller_caracal::configure_neutron::do_config { 'ml2_mechanism_drivers': conf_file => '/etc/neutron/plugins/ml2/ml2_conf.ini', section => 'ml2', param => 'mechanism_drivers', value => $controller_caracal::params::ml2_mechanism_drivers, }
    controller_caracal::configure_neutron::do_config { 'ml2_path_mtu': conf_file => '/etc/neutron/plugins/ml2/ml2_conf.ini', section => 'ml2', param => 'path_mtu', value => $controller_caracal::params::ml2_path_mtu, }
+   controller_caracal::configure_neutron::do_config { 'ml2_extension_drivers': conf_file => '/etc/neutron/plugins/ml2/ml2_conf.ini', section => 'ml2', param => 'extension_drivers', value => $controller_caracal::params::ml2_extension_drivers, }
    
 
    controller_caracal::configure_neutron::do_config { 'ml2_tunnel_id_ranges': conf_file => '/etc/neutron/plugins/ml2/ml2_conf.ini', section => 'ml2_type_gre', param => 'tunnel_id_ranges', value => $controller_caracal::params::ml2_tunnel_id_ranges, }

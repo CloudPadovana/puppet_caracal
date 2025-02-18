@@ -284,6 +284,9 @@ class controller_caracal::params ($cloud_role){
    $keystone_token_provider = 'fernet'
    $ml2_enable_ipset = true
    $ml2_enable_security_group = true
+   ### FF per Caracal
+   $ml2_extension_drivers = 'port_security'
+   ###
    # Shorter name for ml2_firewall_driver                                                      
    #$ml2_firewall_driver = 'iptables_hybrid'
    $ml2_firewall_driver = 'neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'    
