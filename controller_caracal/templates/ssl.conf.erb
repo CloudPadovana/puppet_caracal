@@ -1,7 +1,4 @@
 Listen 443 https
-<% if @is_production -%>
-Listen 1443 https
-<% end -%>
 
 SSLPassPhraseDialog     exec:/usr/libexec/httpd-ssl-pass-dialog
 
@@ -244,11 +241,7 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
 #
 #######################################################################################################################
 
-<% if @is_production -%>
-<VirtualHost *:1443>
-<% else -%>
 <VirtualHost *:443>
-<% end -%>
     ServerName       <%=@keystone_cv_fqdn -%>:443
     UseCanonicalName On
     TraceEnable      Off
@@ -350,11 +343,7 @@ SSLCipherSuite          "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
 #
 #######################################################################################################################
 
-<% if @is_production -%>
-<VirtualHost *:1443>
-<% else -%>
 <VirtualHost *:443>
-<% end -%>
     ServerName       <%=@cv_site_fqdn%>:443
     UseCanonicalName On
     TraceEnable      Off
