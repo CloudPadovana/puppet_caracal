@@ -58,6 +58,9 @@
 
 "os_compute_api:os-instance-actions:list": "rule:project_member_or_admin"
 
+"os_compute_api:os-attach-interfaces:list": "rule:project_member_or_admin"
+"os_compute_api:os-attach-interfaces:show": "rule:project_member_or_admin"
+
 # Starting with microversion 2.47, the flavor and its extra specs used
 # for a server is also returned in the response when showing server
 # details, updating a server or rebuilding a server.
