@@ -57,6 +57,8 @@ if $::compute_caracal::cloud_role == "is_prod_localstorage" or $::compute_caraca
   $private_key          = 'id_rsa_ctrl-01'     
   $project_name         = 'services'
   $pub_key              = "ssh-rsa "
+  $nova_transport_url = ''
+  $neutron_transport_url = ''
   $transport_url = ''
   $www_authenticate_uri = 'https://xxx.xxx.xxx.xxx:443'
 
@@ -87,6 +89,8 @@ if $::compute_caracal::cloud_role == "is_prod_localstorage" or $::compute_caraca
   $private_key          = 'id_rsa_controller-01'
   $project_name         = 'service'
   $pub_key              = "ssh-rsa "       
+  $nova_transport_url = 'rabbit://openstack:'   
+  $neutron_transport_url = 'rabbit://openstack:'   
   $transport_url = 'rabbit://openstack:'   
   $www_authenticate_uri = 'https://xxx.xxx.xxx.xxx:443'
 }                              }

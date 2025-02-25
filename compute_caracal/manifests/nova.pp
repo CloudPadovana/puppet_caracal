@@ -80,7 +80,7 @@ define do_config_list ($conf_file, $section, $param, $values) {
 #
 
   compute_caracal::nova::do_config { 'nova_enabled_apis': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'enabled_apis', value => $compute_caracal::params::nova_enabled_apis, }
-  compute_caracal::nova::do_config { 'nova_transport_url': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'transport_url', value => $compute_caracal::params::transport_url, }
+  compute_caracal::nova::do_config { 'nova_transport_url': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'transport_url', value => $compute_caracal::params::nova_transport_url, }
 
   compute_caracal::nova::do_config { 'nova_use_neutron': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'use_neutron', value => $compute_caracal::params::nova_use_neutron}
   compute_caracal::nova::do_config { 'nova_my_ip': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'my_ip', value => $compute_caracal::params::my_ip, }

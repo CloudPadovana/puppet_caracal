@@ -67,7 +67,7 @@ define do_config_list ($conf_file, $section, $param, $values) {
    controller_caracal::configure_nova::do_config { 'nova_vendordata_providers': conf_file => '/etc/nova/nova.conf', section => 'api', param => 'vendordata_providers', value => $controller_caracal::params::nova_vendordata_providers, }
    controller_caracal::configure_nova::do_config { 'nova_vendordata_jsonfile_path': conf_file => '/etc/nova/nova.conf', section => 'api', param => 'vendordata_jsonfile_path', value => $controller_caracal::params::nova_vendordata_jsonfile_path, }
 
-   controller_caracal::configure_nova::do_config { 'nova_transport_url': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'transport_url', value => $controller_caracal::params::transport_url, }
+   controller_caracal::configure_nova::do_config { 'nova_transport_url': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'transport_url', value => $controller_caracal::params::nova_transport_url, }
    controller_caracal::configure_nova::do_config { 'nova_my_ip': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'my_ip', value => $controller_caracal::params::vip_mgmt, }
    controller_caracal::configure_nova::do_config { 'nova_use_neutron': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'use_neutron', value => $controller_caracal::params::use_neutron, }
    controller_caracal::configure_nova::do_config { 'nova_cpu_allocation_ratio': conf_file => '/etc/nova/nova.conf', section => 'DEFAULT', param => 'cpu_allocation_ratio', value => $controller_caracal::params::nova_cpu_allocation_ratio, }

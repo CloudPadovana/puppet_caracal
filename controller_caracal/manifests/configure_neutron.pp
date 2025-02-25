@@ -33,7 +33,7 @@ define remove_config ($conf_file, $section, $param, $value) {
                                                                                                                                              
   
 # neutron.conf
-   controller_caracal::configure_neutron::do_config { 'neutron_transport_url': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'transport_url', value => $controller_caracal::params::transport_url, }
+   controller_caracal::configure_neutron::do_config { 'neutron_transport_url': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'transport_url', value => $controller_caracal::params::neutron_transport_url, }
    controller_caracal::configure_neutron::do_config { 'neutron_auth_strategy': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'auth_strategy', value => $controller_caracal::params::auth_strategy, }
    controller_caracal::configure_neutron::do_config { 'neutron_core_plugin': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'core_plugin', value => $controller_caracal::params::neutron_core_plugin, }
    controller_caracal::configure_neutron::do_config { 'neutron_service_plugins': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'service_plugins', value => $controller_caracal::params::neutron_service_plugins, }

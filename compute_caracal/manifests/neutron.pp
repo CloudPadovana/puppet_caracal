@@ -50,7 +50,7 @@ class compute_caracal::neutron inherits compute_caracal::params {
 ####verificare
 ###  compute_caracal::neutron::do_config { 'neutron_rpc_backend': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'rpc_backend', value => $compute_caracal::params::rpc_backend, }
 ####rpc_backend sostituito da transport url
-  compute_caracal::neutron::do_config { 'neutron_transport_url': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'transport_url', value => $compute_caracal::params::transport_url, }
+  compute_caracal::neutron::do_config { 'neutron_transport_url': conf_file => '/etc/neutron/neutron.conf', section => 'DEFAULT', param => 'transport_url', value => $compute_caracal::params::neutron_transport_url, }
 
 ####
 

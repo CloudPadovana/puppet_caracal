@@ -94,6 +94,9 @@ class controller_caracal::params ($cloud_role){
    $project_name = 'services'
    $pub_key = "ssh-rsa "   
    $site_fqdn = "cloud-areapd.pd.infn.it"
+   ## FF rabbit diversi per neutron e nova al momento sono nella cloud di test
+   $neutron_transport_url = ''
+   $nova_transport_url = ''
    $transport_url = ''
    $vip_mgmt = ''
    $vip_pub = ''
@@ -194,6 +197,9 @@ class controller_caracal::params ($cloud_role){
    $project_name = 'service'
    $pub_key = "ssh-rsa "     
    $site_fqdn = "cloud-areapd-test.pd.infn.it"
+   ## FF rabbit diversi per neutron e nova al momento solo nella cloud di test
+   $neutron_transport_url = ''
+   $nova_transport_url = ''
    $transport_url = ''
    $vip_mgmt = ''
    $vip_pub = ''
