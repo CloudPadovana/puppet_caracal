@@ -79,21 +79,21 @@ file { "/etc/cron.d/fetch-crl":
            }
  
 
- # Services for ec2       
-    service { "openstack-ec2-api":
-                   ensure      => running,
-                   enable      => true,
-                   hasstatus   => true,
-                   hasrestart  => true,
-                   subscribe   => Class['controller_caracal::configure_ec2'],
-           }
-    service { "openstack-ec2-api-metadata":
-                   ensure      => running,
-                   enable      => true,
-                   hasstatus   => true,
-                   hasrestart  => true,
-                   subscribe   => Class['controller_caracal::configure_ec2'],
-           }
+# # Services for ec2       
+#    service { "openstack-ec2-api":
+#                   ensure      => running,
+#                   enable      => true,
+#                   hasstatus   => true,
+#                   hasrestart  => true,
+#                   subscribe   => Class['controller_caracal::configure_ec2'],
+#           }
+#    service { "openstack-ec2-api-metadata":
+#                   ensure      => running,
+#                   enable      => true,
+#                   hasstatus   => true,
+#                   hasrestart  => true,
+#                   subscribe   => Class['controller_caracal::configure_ec2'],
+#           }
 
  # Services for neutron       
     service { "openvswitch":
