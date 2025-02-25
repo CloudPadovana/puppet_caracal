@@ -118,3 +118,7 @@
 
 "volume_extension:volume_actions:roll_detaching": "rule:admin_or_user"
 #"volume_extension:volume_actions:roll_detaching": "rule:xena_system_admin_or_project_member"  
+
+"volume:create_transfer": "rule:admin_or_user"
+"volume:delete_transfer": "rule:admin_or_user" 
+
