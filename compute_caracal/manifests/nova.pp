@@ -272,9 +272,26 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
 
 }
 
+# GPU specific settings for cld-np-gpu-04
 
+if ($::mgmtnw_ip == "192.168.60.136") {
 
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
+   compute_caracal::nova::do_config_list { "pci_alias":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'alias',
+           values    => [ "$compute_caracal::params::pci_A2" ],
+         }
+
+   compute_caracal::nova::do_config_list { "pci_device_spec":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'device_spec',
+           values    => [ "$compute_caracal::params::pci_device_spec_A2" ],
+         }
+}
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-dfa-gpu-03
  if ($::mgmtnw_ip == "192.168.60.83") {
@@ -293,8 +310,6 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            param     => 'preallocate_images',
            values    => [ "$compute_caracal::params::nova_preallocate_images"   ],
          }
-
-
 }
 
 
@@ -310,11 +325,7 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            param     => 'alias',
            values    => [ "$compute_caracal::params::pci_A2" ],
          }
-
-
 }
-
-
 
 # GPU specific settings for cld-dfa-gpu-05
 
@@ -328,10 +339,51 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            param     => 'alias',
            values    => [ "$compute_caracal::params::pci_A30" ],
          }
+}
 
+# GPU specific settings for cld-ter-gpu-06
+
+if ($::mgmtnw_ip == "192.168.60.170") {
+
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
+
+   compute_caracal::nova::do_config_list { "pci_alias":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'alias',
+           values    => [ "$compute_caracal::params::pci_H100" ],
+         }
+
+   compute_caracal::nova::do_config_list { "pci_device_spec":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'device_spec',
+           values    => [ "$compute_caracal::params::pci_device_spec_h100" ],
+         }
 
 }
 
+# GPU specific settings for cld-dfa-gpu-06
+
+if ($::mgmtnw_ip == "192.168.60.110") {
+
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_yoga::params::pci_device_spec, }
+
+   compute_caracal::nova::do_config_list { "pci_alias":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'alias',
+           values    => [ "$compute_caracal::params::pci_L40S" ],
+         }
+
+   compute_caracal::nova::do_config_list { "pci_device_spec":
+           conf_file => '/etc/nova/nova.conf',
+           section   => 'pci',
+           param     => 'device_spec',
+           values    => [ "$compute_caracal::params::pci_device_spec_L40S" ],
+         }
+
+}
 # GPU specific settings for cld-elx-gpu-01..02
 
  if ($::mgmtnw_ip == "192.168.60.190") or ($::mgmtnw_ip == "192.168.60.191") {
