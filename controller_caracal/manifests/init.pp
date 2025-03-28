@@ -29,8 +29,9 @@ class controller_caracal ($cloud_role_foreman = "undefined") {
   class {'controller_caracal::configure_placement':}
 ###
 
-  # Configure ec2
-  class {'controller_caracal::configure_ec2':}
+## FF in Caracalla non e' piu' supportato
+#  # Configure ec2
+#  class {'controller_caracal::configure_ec2':}
 
   # Configure neutron
   class {'controller_caracal::configure_neutron':}
