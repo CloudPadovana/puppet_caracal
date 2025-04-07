@@ -93,13 +93,19 @@ $cloud_role = $compute_caracal::cloud_role
          require => Package[$yumutils],
   } -> 
 
-  exec { "yum update for update from Yoga in DELL hosts":
-         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent --enablerepo epel -x facter update",
+  exec { "yum update for Ceph from Yoga to Caracal enabling epel":
+         command => "/usr/bin/yum -y update *ceph* --enablerepo=epel",
+         onlyif => "/usr/bin/yum list installed | grep ceph-common | grep -i 'yoga'",
+         timeout => 3600,
+  } ->
+
+  exec { "yum update to Caracal in DELL hosts":
+         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent",
          onlyif => "/bin/rpm -qi dell-system-update | grep 'Architecture:' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'yoga'",
          timeout => 3600,
   } ->
 
-  exec { "yum update for update from Yoga":
+  exec { "yum update to Caracal in non DELL hosts":
          command => "/usr/bin/yum -y update",
          onlyif => "/bin/rpm -qi dell-system-update | grep 'not installed' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'yoga'",
          timeout => 3600,
