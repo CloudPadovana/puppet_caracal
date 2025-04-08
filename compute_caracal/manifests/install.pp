@@ -100,7 +100,7 @@ $cloud_role = $compute_caracal::cloud_role
   } ->
 
   exec { "yum update to Caracal in DELL hosts":
-         command => "/usr/bin/yum -y --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent",
+         command => "/usr/bin/yum -y update --disablerepo dell-system-update_independent --disablerepo dell-system-update_dependent",
          onlyif => "/bin/rpm -qi dell-system-update | grep 'Architecture:' &&  /usr/bin/yum list installed | grep openstack-neutron.noarch | grep -i 'yoga'",
          timeout => 3600,
   } ->
