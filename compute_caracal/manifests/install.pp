@@ -95,7 +95,7 @@ $cloud_role = $compute_caracal::cloud_role
 
   exec { "yum update for Ceph from Yoga to Caracal enabling epel":
          command => "/usr/bin/yum -y update *ceph* --enablerepo=epel",
-         onlyif => "/usr/bin/yum list installed | grep ceph-common | grep -i 'yoga'",
+         onlyif => "/usr/bin/yum list installed | grep ceph-common | grep -i 'pacific'",
          timeout => 3600,
   } ->
 
