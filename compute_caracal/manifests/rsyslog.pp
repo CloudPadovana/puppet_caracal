@@ -15,33 +15,24 @@ class compute_caracal::rsyslog inherits compute_caracal::params {
         require => Package["rsyslog"],
       }
 
-      file_line { '/etc/rsyslog.conf remotehost':
-        path   => '/etc/rsyslog.conf',
-        line   => '*.* @@192.168.60.152:514',
-        match  => '@@',
-        notify => Service['rsyslog'],
+      file {'rsyslog_conf':
+          source      => 'puppet:///modules/compute_caracal/rsyslog.conf',
+          path        => '/etc/rsyslog.conf',
+          backup      => true,
+          owner   => root,
+          group   => root,
+          mode    => "0644",
+          notify => Service['rsyslog'],
       }
 
-       file_line { '/etc/rsyslog.conf imklog':
-        path   => '/etc/rsyslog.conf',
-        line   => "\$ModLoad imklog # reads kernel messages (the same are read from journald)",
-        match  => "imklog",
-        notify => Service['rsyslog'],
+      file {'ignore_nagios':
+          source      => 'puppet:///modules/compute_caracal/ignore-systemd-session-slice-nagios.conf',
+          path        => '/etc/rsyslog.d/ignore-systemd-session-slice-nagios.conf',
+          backup      => true,
+          owner   => root,
+          group   => root,
+          mode    => "0644",
+          notify => Service['rsyslog'],
       }
-
-
-      
-    file {'ignore_nagios':
-      source      => 'puppet:///modules/compute_caracal/ignore-systemd-session-slice-nagios.conf',
-      path        => '/etc/rsyslog.d/ignore-systemd-session-slice-nagios.conf',
-      backup      => true,
-      owner   => root,
-      group   => root,
-      mode    => "0644",
-      notify => Service['rsyslog'],
-       }
              
-
-  Package['rsyslog'] -> File_line<| path == '/etc/rsyslog.conf' |>
-
 }
