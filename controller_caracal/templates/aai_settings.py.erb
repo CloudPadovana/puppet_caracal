@@ -7,7 +7,8 @@ DATABASES['default'] = {
     'USER' : '<%=@aai_db_user-%>',
     'PASSWORD' : '<%=@aai_db_pwd-%>',
     'HOST' : '<%=@aai_db_host-%>',
-    'PORT' : '<%=@aai_db_port-%>'
+    'PORT' : '<%=@aai_db_port-%>',
+    'OPTIONS' : { 'charset' : 'utf8mb3' }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
