@@ -1,5 +1,5 @@
-#class compute_caracal::params {
-class compute_caracal::params ($cloud_role) {
+class compute_caracal::params {
+
 ########creando la classe cloud_prod con parametro cloud_role posso introdurre la condizione production, test o qualunque altro tipo di cloud semplicemente sovrascrivendo via foreman il valore della variabile. Qui andrebbe ovviamente inserito un if per ogni tipo di cloud utilizzata con i parametri caratteristici della cloud
 
 ####
@@ -20,21 +20,12 @@ class compute_caracal::params ($cloud_role) {
                  gpgcheck => 0
             }
 
-   file { '/etc/grid-security/certificates/INFN-CA-2015.pem':
-         ensure   => present,
-         require    => Package["ca_INFN-CA-2015"],
-        }
-
-   package { 'ca_INFN-CA-2015':
-              ensure => 'latest',
-              require => Yumrepo["EGI_CERT"]
-           }
-
-
 
 if $::compute_caracal::cloud_role == "is_prod_localstorage" or $::compute_caracal::cloud_role == "is_prod_sharedstorage" {
 
    ### Setting per la cloud di produzione
+  $cinder_keystone_auth_url = 'http://xxxx:5000/v3'
+  $cinder_password = ''
   $disk_allocation_ratio = '' 
   $endpoint_template = 'http://:xxxxxx:8776/v2/%(project_id)s' 
   $glance_api_servers   = ''   
@@ -67,6 +58,8 @@ if $::compute_caracal::cloud_role == "is_prod_localstorage" or $::compute_caraca
  if $::compute_caracal::cloud_role == "is_test" {
 
    ### Setting per la cloud di test
+  $cinder_keystone_auth_url = 'http://xxxxxxxx:5000/v3'
+  $cinder_password = ''
   $disk_allocation_ratio = '5.0'
   $endpoint_template = 'http://:xxxxxx:8776/v2/%(project_id)s' 
   $glance_api_servers   = 'http://xxxx:9292'
@@ -127,6 +120,8 @@ w
   $libvirt_inject_pass     = true       
   $mechanism_drivers       = 'openvswitch'       
   $my_ip = $::mgmtnw_ip
+  $nagios_server = ""
+  $nagios_email = "cloud-monATpd.infn.it"
   $neutron_firewall_driver = 'neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver'       
   $neutron_lock_path               = '/var/lib/neutron/tmp'       
   $neutron_username      = 'neutron'
@@ -145,8 +140,13 @@ w
   $ovs_local_ip            = $::datanw_ip       
   $pci_A2 = '{"name":"A2","product_id":"25b6","vendor_id":"10de","device_type":"type-PF"}'
   $pci_device_spec_A2 = '{"name":"A2","product_id":"25b6","vendor_id":"10de","device_type":"type-PF"}'
+  $pci_A30 = '{"name":"A30","product_id":"20b7","vendor_id":"10de","device_type":"type-PF"}'
+  $pci_A40 = '{"name":"A40","product_id":"2235","vendor_id":"10de","device_type":"type-PF"}' 
+  $pci_device_spec_A40 = '{"product_id":"2235","vendor_id":"10de"}' 
+  $pci_A4000_VGA = '{"name":"A4000_VGA","product_id":"24b0","vendor_id":"10de","device_type":"type-PCI"}' 
+  $pci_A4000_SND = '{"name":"A4000_SND","product_id":"228b","vendor_id":"10de","device_type":"type-PCI"}' 
   $pci_H100 = '{"name":"H100","product_id":"2330","vendor_id":"10de","device_type":"type-PF"}'
-  $pci_device_spec_H100 = '{"product_id":"2330","vendor_id":"10de"}'
+  $pci_device_spec_h100 = '{"product_id":"2330","vendor_id":"10de"}'
   $pci_L40S = '{"name":"L40S","product_id":"26B9","vendor_id":"10de","device_type":"type-PF"}'
   $pci_device_spec_L40S = '{"product_id":"26B9","vendor_id":"10de"}'
   $pci_titanxp_VGA = '{"name":"GP102_VGA","product_id":"1b02","vendor_id":"10de","device_type":"type-PCI"}'
