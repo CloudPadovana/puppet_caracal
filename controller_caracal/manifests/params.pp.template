@@ -11,12 +11,12 @@ class controller_caracal::params ($cloud_role){
    $aai_db_port = 0
    $aai_db_pwd = ""
    $aai_db_user = ""
-   $aai_mail_admins = [ "Supporto CloudVeneto <support@cloudveneto.it>" ]
-   $aai_mail_reply_to = "Supporto CloudVeneto <support@cloudveneto.it>"
+   $aai_mail_admins = [ "CloudVeneto Support <supportATcloudveneto.it>" ]
    $aai_mail_host = ""
    $aai_mail_port = 25
    $aai_mail_pwd = ""
    $aai_mail_sender = ""
+   $aai_mail_reply_to = "CloudVeneto Support <supportATcloudveneto.it>"
    $aai_mail_user = ""
    $admin_password = ''
    $auth_uri = 'http://xxx.xxx.xxx.xxx:5000'
@@ -27,7 +27,7 @@ class controller_caracal::params ($cloud_role){
    $cinder_ceph_rbd_user = ''
    $cinder_db = ''
    $cinder_default_volume_type = 'ceph-ec'
-   $cinder_enabled_backends = 'ceph,iscsi-infnpd,equallogic-unipd,ceph-ec'
+   $cinder_enabled_backends = 'ceph,ceph-ec,ceph-ssd-r3'
    $cinder_keystone_authtoken_auth_url = 'http://xxx.xxx.xxx.xxx:5000'
    $cinder_osapi_volume_workers = '8'
    $cinder_password = ''
@@ -94,7 +94,6 @@ class controller_caracal::params ($cloud_role){
    $project_name = 'services'
    $pub_key = "ssh-rsa "   
    $site_fqdn = "cloud-areapd.pd.infn.it"
-   ## FF rabbit diversi per neutron e nova al momento sono nella cloud di test
    $neutron_transport_url = ''
    $nova_transport_url = ''
    $transport_url = ''
@@ -113,8 +112,7 @@ class controller_caracal::params ($cloud_role){
    $aai_db_port = 0
    $aai_db_pwd = ""
    $aai_db_user = ""
-   $aai_mail_admins = [ "Supporto CloudVeneto <support@cloudveneto.it>" ]
-   $aai_mail_reply_to = "Supporto CloudVeneto <support@cloudveneto.it>"
+   $aai_mail_admins = [ "Supporto CloudVeneto <supportATcloudveneto.it>" ]
    $aai_mail_host = ""
    $aai_mail_port = 25
    $aai_mail_pwd = ""
@@ -130,7 +128,7 @@ class controller_caracal::params ($cloud_role){
    $cinder_ceph_rbd_user = ''
    $cinder_db = ''
    $cinder_default_volume_type = 'ceph-ec'
-   $cinder_enabled_backends = 'ceph,iscsi-infnpd,,ceph-ec'
+   $cinder_enabled_backends = 'ceph,ceph-ec'
    $cinder_keystone_authtoken_auth_url = 'http://xxx.xxx.xxx.xxx:5000'
    $cinder_osapi_volume_workers = '4'
    $cinder_password = ''  
@@ -197,7 +195,6 @@ class controller_caracal::params ($cloud_role){
    $project_name = 'service'
    $pub_key = "ssh-rsa "     
    $site_fqdn = "cloud-areapd-test.pd.infn.it"
-   ## FF rabbit diversi per neutron e nova al momento solo nella cloud di test
    $neutron_transport_url = ''
    $nova_transport_url = ''
    $transport_url = ''
@@ -232,10 +229,14 @@ class controller_caracal::params ($cloud_role){
    $cinder_lock_path = '/var/lib/cinder/tmp'
    $cinder_my_ip = $::mgmt_ip
    ## FF per caracal
+   $cinder_auth_strategy = 'keystone'
    $cinder_policy_file = '/etc/neutron/policy.yaml'
    ###
    $cinder_service_token_roles_required = true
    $cinder_username = 'cinder'
+   $cinder_use_syslog = true
+   $cinder_syslog_log_facility = 'LOG_LOCAL2'
+   $dhcp_option_force = '26,1500'
    $dhcp_agents_per_network = '2'
    $dhcp_driver = 'neutron.agent.linux.dhcp.Dnsmasq'
    $ec2_cache_backend ='oslo_cache.dict'
@@ -250,6 +251,7 @@ class controller_caracal::params ($cloud_role){
    $enable_fip_topology_check = 'False'
    $enabled_apis = 'osapi_compute,metadata'
    $enabled_filters   = 'AggregateMultiTenancyIsolation,AggregateInstanceExtraSpecsFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,PciPassthroughFilter,NUMATopologyFilter'
+   $enable_proxy_headers_parsing = true
    $flavor = 'keystone'
    $glance_image_size_cap = '55000000000'
    $glance_api_default_store = 'rbd'
@@ -278,15 +280,14 @@ class controller_caracal::params ($cloud_role){
    $heat_stack_user_domain_name = 'heat'
    $heat_username = 'heat'
    $horizon_secret_key = ''
-   $enable_proxy_headers_parsing = true
-   # MS: openvswitch si puo` usare al posto di neutron.agent.linux.interface.OVSInterfaceDriver 
-   # $interface_driver = 'neutron.agent.linux.interface.OVSInterfaceDriver'                                                     
    $interface_driver = 'openvswitch'
    $iscsi_volume_backend_name = 'iscsi-infnpd'
    $iscsi_volume_driver = 'cinder.volume.drivers.nfs.NfsDriver'
    $iscsi_volume_group = 'iscsi-infnpd'
    $keystone_auth_methods = 'sKey,password,token'
    $keystone_log_dir = '/var/log/keystone'
+   $keystone_use_syslog = true
+   $keystone_syslog_log_facility = 'LOG_LOCAL3'
    $keystone_token_provider = 'fernet'
    $ml2_enable_ipset = true
    $ml2_enable_security_group = true
@@ -299,6 +300,7 @@ class controller_caracal::params ($cloud_role){
    $ml2_flat_networks = '*'
    $ml2_local_ip = $::data_ip
    $ml2_mechanism_drivers = 'openvswitch'
+   $ml2_path_mtu = '1542'
    $ml2_tenant_network_types = 'gre'
    $ml2_tunnel_id_ranges = '1:1000'
    $ml2_tunnel_types = 'gre'
@@ -306,6 +308,7 @@ class controller_caracal::params ($cloud_role){
    $neutron_allow_automatic_l3agent_failover = true
    $neutron_allow_overlapping_ips = true
    $neutron_core_plugin = 'ml2'
+   $neutron_global_physnet_mtu = '9000'
    $neutron_l3_ha = true
    $neutron_lock_path = '/var/lib/neutron/tmp'
    $neutron_max_l3_agents_per_router = '2'
@@ -315,18 +318,28 @@ class controller_caracal::params ($cloud_role){
    $neutron_service_plugins = 'router'
    $neutron_service_token_roles_required = true
    $neutron_username = 'neutron'
+   $neutron_use_syslog = true
+   $neutron_syslog_log_facility = 'LOG_LOCAL6'
+   $neutron_dhcp_agent_service_d_limit = '/etc/systemd/system/neutron-dhcp-agent.service.d'
+   $neutron_openvswitch_agent_service_d_limit = '/etc/systemd/system/neutron-openvswitch-agent.service.d'
+   $neutron_server_service_d_limit = '/etc/systemd/system/neutron-server.service.d'
+   $neutron_dhcp_agent_service_limit = '10000'
+   $neutron_openvswitch_agent_service_limit = '10000'
+   $neutron_server_service_limit = '10000'
    ## FF per caracal
    $neutron_policy_file = '/etc/neutron/policy.yaml'
    ###
    $nova_cinder_catalog_info = 'volumev3::internalURL'
    $nova_cpu_allocation_ratio = '4.0'
    $nova_default_schedule_zone = 'nova'
+   $nova_disable_compute_service_check_for_ffu = true
    $nova_discover_hosts_in_cells_interval = '300'
    $nova_firewall_driver = 'nova.virt.firewall.NoopFirewallDriver'
    $nova_inject_key = true
    $nova_inject_partition = '-1'
    $nova_inject_password = true
    $nova_log_dir = '/var/log/nova'
+   $nova_syslog_log_facility = 'LOG_LOCAL0'
    $nova_oslo_lock_path = '/var/lib/nova/tmp'
    $nova_policy_file = '/etc/nova/policy.yaml'
    $nova_scheduler_max_attempts = '10'
@@ -336,6 +349,10 @@ class controller_caracal::params ($cloud_role){
    $nova_vendordata_providers = 'StaticJSON'
    $nova_vendordata_jsonfile_path = '/etc/nova/vendor-data.json'
    $ovs_enable_tunneling = true
+   $pci_A2 = '{"name":"A2","product_id":"25b6","vendor_id":"10de","device_type":"type-PF"}'
+   $pci_A30 = '{"name":"A30","product_id":"20b7","vendor_id":"10de","device_type":"type-PF"}'
+   $pci_A4000_VGA = '{"name":"A4000_VGA","product_id":"24b0","vendor_id":"10de","device_type":"type-PCI"}'
+   $pci_A4000_SND = '{"name":"A4000_SND","product_id":"228b","vendor_id":"10de","device_type":"type-PCI"}'
    $pci_titanxp_VGA = '{"name":"GP102_VGA","product_id":"1b02","vendor_id":"10de","device_type":"type-PCI"}'
    $pci_titanxp_SND = '{"name":"GP102_SND","product_id":"10ef","vendor_id":"10de","device_type":"type-PCI"}'
    $pci_quadro_VGA = '{"name":"QUADRO_VGA","product_id":"1e30","vendor_id":"10de","device_type":"type-PCI"}'
@@ -346,6 +363,8 @@ class controller_caracal::params ($cloud_role){
    $pci_geforcegtx_SND = '{"name":"GK110_SND","product_id":"0e1a","vendor_id":"10de","device_type":"type-PCI"}'
    $pci_t4 = '{"name":"T4","product_id":"1eb8","vendor_id":"10de","device_type":"type-PF"}'
    $pci_v100 = '{"name":"V100","product_id":"1df6","vendor_id":"10de","device_type":"type-PCI"}'
+   $pci_A40 = '{"name":"A40","product_id":"2235","vendor_id":"10de","device_type":"type-PF"}'
+   $pci_H100 = '{"name":"H100","product_id":"2330","vendor_id":"10de","device_type":"type-PF"}'
    $pci_L40S = '{"name":"L40S","product_id":"26B9","vendor_id":"10de","device_type":"type-PF"}'
    $pci_device_spec =  '{\"vendor_id\":\"10de\"}'
    $placement_service_token_roles_required = true
@@ -393,8 +412,6 @@ class controller_caracal::params ($cloud_role){
 
   $gate_disable_script = ""
   $gate_enable_script = ""
-  #$user_on_gate = ""
-  #$gate_credentials = ""
 
   ############################################################################
   #  Shibboleth params
