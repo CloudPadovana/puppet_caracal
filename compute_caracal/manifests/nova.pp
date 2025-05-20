@@ -285,12 +285,12 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            values    => [ "$compute_caracal::params::pci_A2" ],
          }
 
-   compute_caracal::nova::do_config_list { "pci_device_spec":
-           conf_file => '/etc/nova/nova.conf',
-           section   => 'pci',
-           param     => 'device_spec',
-           values    => [ "$compute_caracal::params::pci_device_spec_A2" ],
-         }
+#   compute_caracal::nova::do_config_list { "pci_device_spec":
+#           conf_file => '/etc/nova/nova.conf',
+#           section   => 'pci',
+#           param     => 'device_spec',
+#           values    => [ "$compute_caracal::params::pci_device_spec_A2" ],
+#         }
 }
 
 # GPU specific setting and some setting for better performance for SSD disk for cld-dfa-gpu-03
@@ -354,12 +354,12 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            values    => [ "$compute_caracal::params::pci_H100" ],
          }
 
-   compute_caracal::nova::do_config_list { "pci_device_spec":
-           conf_file => '/etc/nova/nova.conf',
-           section   => 'pci',
-           param     => 'device_spec',
-           values    => [ "$compute_caracal::params::pci_device_spec_h100" ],
-         }
+#   compute_caracal::nova::do_config_list { "pci_device_spec":
+#           conf_file => '/etc/nova/nova.conf',
+#           section   => 'pci',
+#           param     => 'device_spec',
+#           values    => [ "$compute_caracal::params::pci_device_spec_h100" ],
+#         }
 
 }
 
@@ -367,7 +367,7 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
 
 if ($::mgmtnw_ip == "192.168.60.110") {
 
-compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_yoga::params::pci_device_spec, }
+compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/nova.conf', section => 'pci', param => 'device_spec', value => $compute_caracal::params::pci_device_spec, }
 
    compute_caracal::nova::do_config_list { "pci_alias":
            conf_file => '/etc/nova/nova.conf',
@@ -397,12 +397,12 @@ compute_caracal::nova::do_config { 'pci_device_spec': conf_file => '/etc/nova/no
            values    => [ "$compute_caracal::params::pci_A40" ],
          }
 
-   compute_caracal::nova::do_config_list { "pci_device_spec":
-           conf_file => '/etc/nova/nova.conf',
-           section   => 'pci',
-           param     => 'device_spec',
-           values    => [ "$compute_caracal::params::pci_device_spec_A40" ],
-         }
+#   compute_caracal::nova::do_config_list { "pci_device_spec":
+#           conf_file => '/etc/nova/nova.conf',
+#           section   => 'pci',
+#           param     => 'device_spec',
+#           values    => [ "$compute_caracal::params::pci_device_spec_A40" ],
+#         }
 
 
 }

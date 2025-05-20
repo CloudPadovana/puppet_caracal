@@ -32,6 +32,8 @@ class controller_caracal::params ($cloud_role){
    $cinder_osapi_volume_workers = '8'
    $cinder_password = ''
    $cinder_public_endpoint = ''
+   $cinder_keystone_auth_url = 'http://xxxx:5000/v3'
+   $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cv_site_fqdn = "cloudveneto.ict.unipd.it"
    $ec2_ec2api_workers = '8'
    $ec2_metadata_workers = '8'
@@ -121,7 +123,6 @@ class controller_caracal::params ($cloud_role){
    $admin_password = ''
    $auth_uri = 'http://xxx.xxx.xxx.xxx:5000'
    $auth_url = 'http://xxx.xxx.xxx.xxx:5000'
-   $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cinder_ceph_ec_rbd_pool = ''
    $cinder_ceph_rbd_pool = ''
    $cinder_ceph_rbd_secret_uuid = ''
@@ -133,6 +134,7 @@ class controller_caracal::params ($cloud_role){
    $cinder_osapi_volume_workers = '4'
    $cinder_password = ''  
    $cinder_public_endpoint = ''
+   $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cv_site_fqdn = "cloudveneto-test.ict.unipd.it"
    $dhcp_option_force = ''
    $dnsmasq_config_file = '/etc/neutron/dnsmasq-neutron.conf'
