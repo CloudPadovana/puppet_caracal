@@ -32,7 +32,6 @@ class controller_caracal::params ($cloud_role){
    $cinder_osapi_volume_workers = '8'
    $cinder_password = ''
    $cinder_public_endpoint = ''
-   $cinder_keystone_auth_url = 'http://xxxx:5000/v3'
    $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cv_site_fqdn = "cloudveneto.ict.unipd.it"
    $ec2_ec2api_workers = '8'
