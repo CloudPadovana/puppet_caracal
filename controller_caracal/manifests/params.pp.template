@@ -32,6 +32,7 @@ class controller_caracal::params ($cloud_role){
    $cinder_osapi_volume_workers = '8'
    $cinder_password = ''
    $cinder_public_endpoint = ''
+   $cinder_keystone_auth_url = 'http://xxxx:5000/v3'
    $cinder_service_user_auth_url = 'http://xxx.xxx.xxx.xxx:5000/v3'
    $cv_site_fqdn = "cloudveneto.ict.unipd.it"
    $ec2_ec2api_workers = '8'
@@ -101,6 +102,11 @@ class controller_caracal::params ($cloud_role){
    $vip_mgmt = ''
    $vip_pub = ''
    $www_authenticate_uri = 'https://xxx.xxx.xxx.xxx:443'
+
+   $user_on_gate = "accmgr"
+   $gate_disable_script = "/usr/local/bin/expire-gate-user"
+   $gate_enable_script = "/usr/local/bin/enable-gate-user"
+   $gate_credentials = ""
    } 
     
    if $::controller_caracal::cloud_role == "is_test"    {
@@ -410,9 +416,6 @@ class controller_caracal::params ($cloud_role){
   $enable_aai_ext = false
   $notification_plan = "5,10,20"
   $help_url = "https://${site_fqdn}/Users_Guide/html-desktop/"
-
-  $gate_disable_script = ""
-  $gate_enable_script = ""
 
   ############################################################################
   #  Shibboleth params
