@@ -209,10 +209,10 @@ class controller_caracal::configure_horizon inherits controller_caracal::params 
   #  gate configuration
   ############################################################################
 
-  exec { "gate key check":
-    command => "/usr/bin/test -e ${gate_credentials}",
-    returns => 0,
-  }
+#  exec { "gate key check":
+#    command => "/usr/bin/test -e ${gate_credentials}",
+#    returns => 0,
+#  }
 
   ############################################################################
   #  Memcached configuration
