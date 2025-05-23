@@ -39,8 +39,6 @@
 # Intended scope(s): project
 "os_compute_api:os-simple-tenant-usage:show": "rule:project_member_or_admin or role:accounting"
 
-"os_compute_api:servers:show": "rule:project_member_or_admin" 
-  
 # List all servers with detailed information
 # GET  /servers/detail
 # Intended scope(s): project
