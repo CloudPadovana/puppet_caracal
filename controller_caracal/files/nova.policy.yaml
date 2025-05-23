@@ -67,7 +67,7 @@
 # PUT  /servers/{server_id}
 # POST  /servers/{server_id}/action (rebuild)
 # Intended scope(s): project
-"os_compute_api:servers:show:flavor-extra-specs": "rule:project_member_or_admin"
+"os_compute_api:servers:show:flavor-extra-specs": "rule:project_member_or_admin or role:accounting"
 
 "os_compute_api:os-flavor-extra-specs:show": "rule:project_member_or_admin"
 
