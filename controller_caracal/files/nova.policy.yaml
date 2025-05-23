@@ -74,7 +74,8 @@
 "os_compute_api:os-flavor-extra-specs:index": "rule:project_member_or_admin or role:accounting"
 
 ### FF
-"os_compute_api:os-flavor-access": "(role:reader and system_scope:all) or (role:reader and domain_id:%(target.domain_id)s) or (role:accounting) or (role:admin) or (role:member)"
+"os_compute_api:os-flavor-access": "rule:project_member_or_admin"
+"os_compute_api:os-quota-sets:detail": "rule:project_member_or_admin"
 
 # List all server groups
 # GET  /os-server-groups
