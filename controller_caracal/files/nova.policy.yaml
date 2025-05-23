@@ -37,19 +37,19 @@
 # Show usage statistics for a specific tenant
 # GET  /os-simple-tenant-usage/{tenant_id}
 # Intended scope(s): project
-"os_compute_api:os-simple-tenant-usage:show": "rule:project_member_or_admin"
+"os_compute_api:os-simple-tenant-usage:show": "rule:project_member_or_admin or role:accounting"
 
 "os_compute_api:servers:show": "rule:project_member_or_admin" 
   
 # List all servers with detailed information
 # GET  /servers/detail
 # Intended scope(s): project
-"os_compute_api:servers:detail": "rule:project_member_or_admin"
+"os_compute_api:servers:detail": "rule:project_member_or_admin or role:accounting"
 
 # Show a server
 # GET  /servers/{server_id}
 # Intended scope(s): project
-"os_compute_api:servers:show": "rule:project_member_or_admin"
+"os_compute_api:servers:show": "rule:project_member_or_admin or role:accounting "
 
 "os_compute_api:os-volumes:list": "rule:project_member_or_admin"
 "os_compute_api:os-volumes:detail": "rule:project_member_or_admin"
@@ -74,6 +74,9 @@
 "os_compute_api:os-flavor-extra-specs:show": "rule:project_member_or_admin"
 
 "os_compute_api:os-flavor-extra-specs:index": "rule:project_member_or_admin"
+
+### FF
+"os_compute_api:os-flavor-access": "(role:reader and system_scope:all) or (role:reader and domain_id:%(target.domain_id)s) or (role:accounting) or (role:admin) or (role:member)"
 
 # List all server groups
 # GET  /os-server-groups
