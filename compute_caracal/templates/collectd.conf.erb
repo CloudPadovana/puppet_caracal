@@ -17,12 +17,17 @@ LoadPlugin syslog
 
 
 <Plugin network>
-Server "<%=@influxdb_collectd_host-%>" "<%=@influxdb_collectd_port-%>"
+  <Server "<%=@influxdb_collectd_host-%>" "<%=@influxdb_collectd_port-%>">
+   SecurityLevel "Encrypt"
+    Username "collectd-prod"
+    Password "5tHhS2Qg2CpLITP"
+ </Server>
 </Plugin>
 
 
 <Plugin virt>
         Connection "qemu:///system"
+        RefreshInterval 60
         HostnameFormat hostname
         PluginInstanceFormat uuid
         Instances 1
