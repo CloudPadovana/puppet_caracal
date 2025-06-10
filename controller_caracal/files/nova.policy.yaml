@@ -150,7 +150,10 @@
 # GET  /os-server-groups/{server_group_id}
 # Intended scope(s): project
 "os_compute_api:os-server-groups:show": "rule:project_member_or_admin"
-  
+
+# FF per vedere floating ip assegnati nei project
+"os_compute_api:servers:index": "rule:context_is_admin or user_id:%(user_id)s"
+
 # Pause a server
 # POST  /servers/{server_id}/action (pause)
 # Intended scope(s): system, project
