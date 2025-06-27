@@ -54,6 +54,10 @@ class controller_caracal ($cloud_role_foreman = "undefined") {
   if ($::controller_caracal::params::enable_aai_ext and ($::controller_caracal::params::enable_oidc or $::controller_caracal::params::enable_infncloud))  {
     class {'controller_caracal::configure_openidc':}
   }
+
+  # Configure Calendarpanel
+  class {'controller_caracal::configure_calendarpanel':}
+
  
   # Service
   class {'controller_caracal::service':}
@@ -76,5 +80,7 @@ class controller_caracal ($cloud_role_foreman = "undefined") {
        Class['controller_caracal::configure_neutron'] -> Class['controller_caracal::configure_cinder']
        Class['controller_caracal::configure_cinder'] -> Class['controller_caracal::configure_horizon']
        Class['controller_caracal::configure_horizon'] -> Class['controller_caracal::configure_heat']
+       Class['controller_caracal::configure_heat'] -> Class['controller_caracal::configure_calendarpanel']
+
 
   }

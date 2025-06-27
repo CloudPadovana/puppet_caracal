@@ -1,0 +1,12 @@
+import os
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+DATABASES['<%= @db_calendarpanel %>'] = {
+    'ENGINE' : 'django.db.backends.mysql',
+    'NAME' : '<%= @db_name_calendarpanel %>',
+    'USER' : '<%= @db_user_calendarpanel %>',
+    'PASSWORD' : '<%= @db_password_calendarpanel %>',
+    'HOST' : '<%= @db_host_calendarpanel %>',
+    'PORT' : '<%= @db_port_calendarpanel %>'
+}

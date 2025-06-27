@@ -493,5 +493,41 @@ class controller_caracal::params ($cloud_role){
     $infncloud_clientid   = ""
     $infncloud_secret     = ""
   }
+  ############################################################################
+  #  Calendar Panel params
+  ############################################################################
+
+
+  if $::controller_caracal::cloud_role == "is_production" {
+
+    $db_calendarpanel = "xxxx"
+    $db_name_calendarpanel = "xxxxx"
+    $db_user_calendarpanel = "xxxxx"
+    $db_password_calendarpanel = "xxxxxx"
+    $db_host_calendarpanel = "xxxxxxxxxxxxxxxxx"
+    $db_port_calendarpanel = "xxxx"
+
+    $openstack_admin_id = "xxxx"
+    $openstack_project_visibility = "xxxxx , yyyyy, kkkkkk"
+    $static_root_calendarpanel = "xxxxx"
+    $project_aaaa = "xxxxxx"
+    $project_bbbbb = "xxxxxxxx"
+
+  } else {
+
+    $db_calendarpanel = "xxxx"
+    $db_name_calendarpanel = "xxxxx"
+    $db_user_calendarpanel = "xxxxx"
+    $db_password_calendarpanel = "xxxxxx"
+    $db_host_calendarpanel = "xxxxxxxxxxxxxxxxx"
+    $db_port_calendarpanel = "xxxx"
+
+    $openstack_admin_id = "xxxx"
+    $openstack_project_visibility = "xxxxx , yyyyy, kkkkkk"
+    $static_root_calendarpanel = "xxxxx"
+    $project_aaaa = "xxxxxx"
+    $project_bbbbb = "xxxxxxxx"
+
+  }
 
 }
