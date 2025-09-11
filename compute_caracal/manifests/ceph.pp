@@ -1,14 +1,23 @@
 class compute_caracal::ceph inherits compute_caracal::params {
 
-     package { 'ceph-common':
-                 ensure => 'installed',
-             }
-                                                            
+#     package { 'ceph-common':
+#                 ensure => 'installed',
+#}
+
+
+    exec { "Install ceph 18.2.5":
+         command => "/usr/bin/yum -y install *ceph-common-18.2.5* --enablerepo=epel",
+         unless => "/bin/rpm -q ceph-common",
+         timeout => 3600,
+  } ->
+
+
+
      file {'ceph.conf':
               source      => 'puppet:///modules/compute_caracal/ceph.conf',
               path        => '/etc/ceph/ceph.conf',
               backup      => true,
-              require => Package["ceph-common"],
+#              require => Package["ceph-common"],
           }
 
      file {'secret.xml':
