@@ -40,6 +40,11 @@ class controller_caracal::install_ca_cert inherits controller_caracal::params {
     target => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
     tag     => [ "ca_GEANT_OV_RSA_CA4" ],
   }
+  # Deployment of the CA HARICA GEANT TLS RSA1
+  file { '/etc/grid-security/certificates/HARICA_GEANT_TLS_RSA1.pem':
+    source => 'puppet:///modules/controller_caracal/HARICA_GEANT_TLS_RSA1.pem',
+    tag    => [ "ca_HARICA_GEANT_TLS_RSA1.pem" ],
+  }
 
   # Registering the external CAs in the system truststore
   file { '/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem':
@@ -47,7 +52,15 @@ class controller_caracal::install_ca_cert inherits controller_caracal::params {
     target  => '/etc/grid-security/certificates/GEANT_OV_RSA_CA4.pem',
     tag     => [ "ca_conf" ],
   }
+
+  file { '/etc/pki/ca-trust/source/anchors/HARICA_GEANT_TLS_RSA1.pem':
+    ensure  => link,
+    target  => '/etc/grid-security/certificates/HARICA_GEANT_TLS_RSA1.pem',
+    tag     => [ "ca_conf" ],
+  }
+
   File <| tag == 'ca_GEANT_OV_RSA_CA4' |> -> File[ "/etc/pki/ca-trust/source/anchors/GEANT_OV_RSA_CA4.pem" ]
+  File <| tag == 'ca_HARICA_GEANT_TLS_RSA1.pem' |> -> File[ "/etc/pki/ca-trust/source/anchors/HARICA_GEANT_TLS_RSA1.pem" ]
 
   file { '/etc/pki/ca-trust/source/anchors/GEANTeScienceSSLCA4.pem':
     ensure  => link,
